@@ -69,14 +69,14 @@ func TestCreateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "400 bad request on no request body",
+			TestName: "post /character/:id 400 bad request on no request body",
 			Request:  request,
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
 			},
 		},
 		{
-			TestName: "500 internal server error on existing character id",
+			TestName: "post /character/:id 500 internal server error on existing character id",
 			Request:  request,
 			RequestBody: models.Character{
 				ID:      1,
@@ -90,7 +90,7 @@ func TestCreateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "500 internal server error on invalid class/race id",
+			TestName: "post /character/:id 500 internal server error on invalid class/race id",
 			Request:  request,
 			RequestBody: models.Character{
 				Name:    "test",
@@ -122,10 +122,6 @@ func TestGetCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/1",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
@@ -133,7 +129,7 @@ func TestGetCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "returns 404 not found on character id not in database",
+			TestName: "get /characters/:id returns 404 not found on character id not in database",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()
@@ -141,10 +137,6 @@ func TestGetCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/10",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "10",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
@@ -170,10 +162,6 @@ func TestUpdateCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			RequestBody: models.Character{
 				Name:    "Test",
@@ -187,7 +175,7 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "returns 404 not found on character id not in database",
+			TestName: "put /characters/:id returns 404 not found on character id not in database",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()
@@ -195,10 +183,6 @@ func TestUpdateCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/10",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "10",
-				},
 			},
 			RequestBody: models.Character{},
 			Expected: helpers.ExpectedResponse{
@@ -206,7 +190,7 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "400 bad request on empty request body",
+			TestName: "put /characters/:id 400 bad request on empty request body",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()
@@ -214,10 +198,6 @@ func TestUpdateCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
@@ -232,10 +212,6 @@ func TestUpdateCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			RequestBody: models.Character{},
 			Expected: helpers.ExpectedResponse{
@@ -263,10 +239,6 @@ func TestLevelUpCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1/level-up",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
@@ -274,7 +246,7 @@ func TestLevelUpCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "returns 404 not found on character id not in database",
+			TestName: "put /characters/:id/level-up returns 404 not found on character id not in database",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()
@@ -282,10 +254,6 @@ func TestLevelUpCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/10/level-up",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "10",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
@@ -311,10 +279,6 @@ func TestDeleteCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodDelete,
 				URL:    "/characters/1",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "1",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
@@ -322,7 +286,7 @@ func TestDeleteCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "returns 404 not found on character id not in database",
+			TestName: "delete /characters/:id returns 404 not found on character id not in database",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()
@@ -330,10 +294,6 @@ func TestDeleteCharacter(t *testing.T) {
 			Request: helpers.Request{
 				Method: http.MethodDelete,
 				URL:    "/characters/10",
-				PathParam: &helpers.PathParam{
-					Name:  "id",
-					Value: "10",
-				},
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
