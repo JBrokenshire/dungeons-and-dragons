@@ -6,7 +6,7 @@ import (
 	"dungeons-and-dragons/server"
 	"dungeons-and-dragons/server/routes"
 	"encoding/json"
-	"fmt"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
@@ -18,6 +18,11 @@ type TestServer struct {
 }
 
 func NewTestServer() *TestServer {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
 	ts := &TestServer{
 		S: &server.Server{
 			Echo: echo.New(),
@@ -37,7 +42,6 @@ func (ts *TestServer) ExecuteTestCase(testCase *TestCase) *httptest.ResponseReco
 
 func (ts *TestServer) ExecuteRequest(req *http.Request) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
-	fmt.Println(rr, req)
 	ts.S.Echo.ServeHTTP(rr, req)
 	return rr
 }
