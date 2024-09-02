@@ -2,12 +2,14 @@ package stores
 
 import (
 	"dungeons-and-dragons/db/models"
+	"errors"
 	"github.com/jinzhu/gorm"
+	"reflect"
 )
 
 type ClassStore interface {
 	GetAll() ([]*models.Class, error)
-	Get(id int) (*models.Class, error)
+	Get(id interface{}) (*models.Class, error)
 	Update(class *models.Class) error
 }
 
@@ -28,7 +30,11 @@ func (s *GormClassStore) GetAll() ([]*models.Class, error) {
 	return classes, nil
 }
 
-func (s *GormClassStore) Get(id int) (*models.Class, error) {
+func (s *GormClassStore) Get(id interface{}) (*models.Class, error) {
+	if reflect.TypeOf(id).Kind() != reflect.String && reflect.TypeOf(id).Kind() != reflect.Int {
+		return nil, errors.New("id should be a string or int")
+	}
+
 	var class models.Class
 	if err := s.db.Where("id = ?", id).First(&class).Error; err != nil {
 		return nil, err
@@ -38,9 +44,5 @@ func (s *GormClassStore) Get(id int) (*models.Class, error) {
 }
 
 func (s *GormClassStore) Update(class *models.Class) error {
-	if err := s.db.Save(class).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return s.db.Save(class).Error
 }
