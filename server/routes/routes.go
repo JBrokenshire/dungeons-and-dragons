@@ -3,15 +3,15 @@ package routes
 import (
 	"dungeons-and-dragons/db/stores"
 	"dungeons-and-dragons/server"
-	controller2 "dungeons-and-dragons/server/controller"
+	"dungeons-and-dragons/server/controller"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
 func ConfigureRoutes(server *server.Server) {
-	classController := controller2.ClassController{Store: stores.NewGormClassStore(server.Db)}
-	raceController := controller2.RaceController{Store: stores.NewGormRaceStore(server.Db)}
-	characterController := controller2.CharacterController{Store: stores.NewGormCharacterStore(server.Db)}
+	classController := controller.ClassController{Store: stores.NewGormClassStore(server.Db)}
+	raceController := controller.RaceController{Store: stores.NewGormRaceStore(server.Db)}
+	characterController := controller.CharacterController{Store: stores.NewGormCharacterStore(server.Db)}
 
 	server.Echo.GET("/", func(ctx echo.Context) error {
 		return ctx.Render(http.StatusOK, "hello", "Jared")
