@@ -2,6 +2,7 @@ package helpers
 
 type TestCase struct {
 	TestName    string
+	Setup       func()
 	Request     Request
 	RequestBody interface{}
 	Expected    ExpectedResponse

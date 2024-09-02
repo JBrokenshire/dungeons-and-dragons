@@ -1,8 +1,8 @@
 package test
 
 import (
-	"dungeons-and-dragons/controller"
-	"dungeons-and-dragons/models"
+	"dungeons-and-dragons/db/models"
+	"dungeons-and-dragons/server/controller"
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"

@@ -22,6 +22,7 @@ func TestMain(m *testing.M) {
 	}
 
 	ts = helpers.NewTestServer()
+	defer ts.S.Db.Close()
 
 	// Run the test
 	code := m.Run()
@@ -30,6 +31,11 @@ func TestMain(m *testing.M) {
 }
 
 func RunTestCase(t *testing.T, test helpers.TestCase) {
+	// Perform any setup needed for the test case
+	if test.Setup != nil {
+		test.Setup()
+	}
+
 	res := ts.ExecuteTestCase(&test)
 	ValidateResults(t, test, res)
 }

@@ -5,7 +5,8 @@ type Character struct {
 	Name    string `gorm:"not null" json:"name"`
 	Level   int    `gorm:"not null" json:"level"`
 	ClassID int    `json:"class_id"`
-	Class   Class  `json:"class" gorm:"foreignKey:ClassID;references:ID"`
 	RaceID  int    `json:"race_id"`
-	Race    *Race  `json:"race" gorm:"foreignKey:RaceID;references:ID"`
+
+	Class *Class `json:"class" gorm:"foreignKey:ClassID;references:ID"`
+	Race  *Race  `json:"race" gorm:"foreignKey:RaceID;references:ID"`
 }

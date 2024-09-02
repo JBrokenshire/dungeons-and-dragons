@@ -1,7 +1,7 @@
 package seeders
 
 import (
-	"dungeons-and-dragons/models"
+	"dungeons-and-dragons/db/models"
 	"log"
 )
 
@@ -26,7 +26,7 @@ func (s *Seeder) SetCharacters() {
 	for _, character := range characters {
 		err := s.DB.Where("id = ?", character.ID).FirstOrCreate(&character).Error
 		if err != nil {
-			log.Printf("error creating class %s: %s", character.Name, err.Error())
+			log.Printf("error creating character %s: %s", character.Name, err.Error())
 		}
 	}
 }

@@ -2,13 +2,15 @@ package server
 
 import (
 	"dungeons-and-dragons/db"
+	"dungeons-and-dragons/db/stores"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 )
 
 type Server struct {
-	Echo *echo.Echo
-	Db   *gorm.DB
+	Echo   *echo.Echo
+	Db     *gorm.DB
+	Stores *stores.Stores
 }
 
 func NewServer() *Server {
@@ -16,6 +18,7 @@ func NewServer() *Server {
 		Echo: echo.New(),
 		Db:   db.Init(),
 	}
+	s.Stores = stores.NewStores(s.Db)
 
 	return s
 }

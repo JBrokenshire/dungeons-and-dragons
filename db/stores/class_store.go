@@ -1,8 +1,7 @@
-package store
+package stores
 
 import (
-	"dungeons-and-dragons/db"
-	"dungeons-and-dragons/models"
+	"dungeons-and-dragons/db/models"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,8 +15,8 @@ type GormClassStore struct {
 	db *gorm.DB
 }
 
-func NewGormClassStore() *GormClassStore {
-	return &GormClassStore{db: db.DB()}
+func NewGormClassStore(db *gorm.DB) *GormClassStore {
+	return &GormClassStore{db: db}
 }
 
 func (s *GormClassStore) GetAll() ([]*models.Class, error) {

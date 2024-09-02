@@ -1,27 +1,28 @@
-package store
+package stores
 
 import (
-	"dungeons-and-dragons/db"
-	"dungeons-and-dragons/models"
+	"dungeons-and-dragons/db/models"
+	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
+	"reflect"
 )
 
 type CharacterStore interface {
 	Create(character *models.Character) error
 	GetAll() ([]*models.Character, error)
-	Get(id int) (*models.Character, error)
+	Get(id interface{}) (*models.Character, error)
 	Update(character *models.Character) error
-	LevelUp(character *models.Character) error
-	Delete(id int) error
+	Delete(id interface{}) error
 }
 
 type GormCharacterStore struct {
 	DB *gorm.DB
 }
 
-func NewGormCharacterStore() *GormCharacterStore {
+func NewGormCharacterStore(db *gorm.DB) *GormCharacterStore {
 	return &GormCharacterStore{
-		DB: db.DB(),
+		DB: db,
 	}
 }
 
@@ -31,34 +32,46 @@ func (g *GormCharacterStore) Create(character *models.Character) error {
 
 func (g *GormCharacterStore) GetAll() ([]*models.Character, error) {
 	var characters []*models.Character
-	if err := g.DB.Preload("Class").Preload("Race").Find(&characters).Error; err != nil {
+	if err := g.DB.
+		Preload("Class").
+		Preload("Race").
+		Find(&characters).
+		Error; err != nil {
 		return nil, err
 	}
 	return characters, nil
 }
 
-func (g *GormCharacterStore) Get(id int) (*models.Character, error) {
+func (g *GormCharacterStore) Get(id interface{}) (*models.Character, error) {
+	if reflect.TypeOf(id).Kind() != reflect.String && reflect.TypeOf(id).Kind() != reflect.Int {
+		return nil, errors.New("id should be a string or int")
+	}
+
 	var character models.Character
 	if err := g.DB.
 		Preload("Class").
 		Preload("Race").
 		Where("characters.id = ?", id).
 		First(&character).Error; err != nil {
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("character with id %q not found", id))
 	}
 
 	return &character, nil
 }
 
 func (g *GormCharacterStore) Update(character *models.Character) error {
-	return g.DB.Preload("Class").Preload("Race").Save(character).Error
+	return g.DB.Save(character).Error
 }
 
 func (g *GormCharacterStore) LevelUp(character *models.Character) error {
 	character.Level++
-	return g.DB.Preload("Class").Preload("Race").Save(character).Error
+	return g.DB.Save(character).Error
 }
 
-func (g *GormCharacterStore) Delete(id int) error {
+func (g *GormCharacterStore) Delete(id interface{}) error {
+	_, err := g.Get(id)
+	if err != nil {
+		return err
+	}
 	return g.DB.Delete(&models.Character{}, "id = ?", id).Error
 }

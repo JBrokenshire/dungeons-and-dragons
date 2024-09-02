@@ -30,6 +30,8 @@ GET /classes and /classes/:id to see information about races.
 ## Database:
 
 MySQL server running locally.
+`dungeons_and_dragons` for production database.
+`dungeons_and_dragons_test` for testing database.
 
 ### Key:
 - PK - Primary Key

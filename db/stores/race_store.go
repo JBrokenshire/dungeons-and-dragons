@@ -1,8 +1,7 @@
-package store
+package stores
 
 import (
-	"dungeons-and-dragons/db"
-	"dungeons-and-dragons/models"
+	"dungeons-and-dragons/db/models"
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,9 +14,9 @@ type GormRaceStore struct {
 	DB *gorm.DB
 }
 
-func NewGormRaceStore() *GormRaceStore {
+func NewGormRaceStore(db *gorm.DB) *GormRaceStore {
 	return &GormRaceStore{
-		DB: db.DB(),
+		DB: db,
 	}
 }
 
