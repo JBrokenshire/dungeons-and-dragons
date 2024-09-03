@@ -75,9 +75,21 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid character request body"))
 	}
 
-	// Request body contains a Character with no fields assigned
+	// None of the request body fields match the character request object
 	if updatedCharacterRequest.IsEmpty() {
 		return ctx.JSON(http.StatusOK, existingCharacter)
+	}
+	if updatedCharacterRequest.Name == "" {
+		updatedCharacterRequest.Name = existingCharacter.Name
+	}
+	if updatedCharacterRequest.Level == 0 {
+		updatedCharacterRequest.Level = existingCharacter.Level
+	}
+	if updatedCharacterRequest.ClassID == 0 {
+		updatedCharacterRequest.ClassID = existingCharacter.ClassID
+	}
+	if updatedCharacterRequest.RaceID == 0 {
+		updatedCharacterRequest.RaceID = existingCharacter.RaceID
 	}
 
 	updatedCharacter, err := c.validateCharacterRequest(updatedCharacterRequest)

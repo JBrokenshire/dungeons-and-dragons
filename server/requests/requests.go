@@ -1,10 +1,10 @@
 package requests
 
 type CharacterRequest struct {
-	Name    string
-	Level   int
-	ClassID int
-	RaceID  int
+	Name    string `json:"name"`
+	Level   int    `json:"level"`
+	ClassID int    `json:"class_id"`
+	RaceID  int    `json:"race_id"`
 	isEmpty func() bool
 }
 
@@ -13,4 +13,9 @@ func (cr CharacterRequest) IsEmpty() bool {
 		return true
 	}
 	return false
+}
+
+type ClassRequest struct {
+	Name        string
+	Description string
 }

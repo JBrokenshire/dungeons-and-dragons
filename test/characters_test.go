@@ -164,17 +164,16 @@ func TestGetCharacter(t *testing.T) {
 }
 
 func TestUpdateCharacter(t *testing.T) {
+	request := helpers.Request{
+		Method: http.MethodPut,
+		URL:    "/characters/1",
+	}
+
 	cases := []helpers.TestCase{
 		{
 			TestName: "can update character by id with valid json in request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
-			Request: helpers.Request{
-				Method: http.MethodPut,
-				URL:    "/characters/1",
-			},
+			Setup:    ts.SetupDefaultCharacters,
+			Request:  request,
 			RequestBody: requests.CharacterRequest{
 				Name:    "Test",
 				ClassID: 1,
@@ -188,10 +187,7 @@ func TestUpdateCharacter(t *testing.T) {
 		},
 		{
 			TestName: "put /characters/:id returns 404 not found on character id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/10",
@@ -203,28 +199,17 @@ func TestUpdateCharacter(t *testing.T) {
 		},
 		{
 			TestName: "put /characters/:id returns 400 bad request on empty request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
-			Request: helpers.Request{
-				Method: http.MethodPut,
-				URL:    "/characters/1",
-			},
+			Setup:    ts.SetupDefaultCharacters,
+			Request:  request,
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character request body",
 			},
 		},
 		{
-			TestName: "no update on empty character in request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
-			Request: helpers.Request{
-				Method: http.MethodPut,
-				URL:    "/characters/1",
-			},
+			TestName:    "no update on empty character in request body",
+			Setup:       ts.SetupDefaultCharacters,
+			Request:     request,
 			RequestBody: requests.CharacterRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
@@ -232,11 +217,32 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "put /character/:id returns 400 bad request on invalid class id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
+			TestName: "update with only name in request body",
+			Setup:    ts.SetupDefaultCharacters,
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				Name: "Test",
 			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts:  []string{`"id":1`, `"name":"Test"`, `"level":3`, `"class_id":4`, `"race_id":18`},
+			},
+		},
+		{
+			TestName: "update with only class id in request body",
+			Setup:    ts.SetupDefaultCharacters,
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				ClassID: 1,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":1`, `"race_id":18`},
+			},
+		},
+		{
+			TestName: "put /character/:id returns 400 bad request on invalid class id",
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1",
@@ -249,14 +255,12 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character classID",
 			},
 		},
 		{
 			TestName: "put /character/:id returns 400 bad request on invalid race id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1",
@@ -269,6 +273,22 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character raceID",
+			},
+		},
+		{
+			TestName: "put /characters/:id returns 400 bad request on invalid level",
+			Setup:    ts.SetupDefaultCharacters,
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				Name:    "Test",
+				ClassID: 1,
+				RaceID:  1,
+				Level:   100,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character level",
 			},
 		},
 	}
