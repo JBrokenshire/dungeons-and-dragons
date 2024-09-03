@@ -45,7 +45,6 @@ func TestGetAllCharacters(t *testing.T) {
 }
 
 func TestCreateCharacter(t *testing.T) {
-	ts.ClearTable("characters")
 	ts.SetupDefaultCharacters()
 
 	request := helpers.Request{
@@ -73,6 +72,7 @@ func TestCreateCharacter(t *testing.T) {
 			Request:  request,
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid request body",
 			},
 		},
 		{
@@ -86,6 +86,7 @@ func TestCreateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character classID",
 			},
 		},
 		{
@@ -99,6 +100,7 @@ func TestCreateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character raceID",
 			},
 		},
 		{
@@ -112,6 +114,7 @@ func TestCreateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character level",
 			},
 		},
 	}
@@ -127,10 +130,7 @@ func TestGetCharacter(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can get character by id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/1",
@@ -142,10 +142,7 @@ func TestGetCharacter(t *testing.T) {
 		},
 		{
 			TestName: "get /characters/:id returns 404 not found on character id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/10",
@@ -304,10 +301,7 @@ func TestLevelUpCharacter(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can level up character by id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/1/level-up",
@@ -319,10 +313,7 @@ func TestLevelUpCharacter(t *testing.T) {
 		},
 		{
 			TestName: "put /characters/:id/level-up returns 404 not found on character id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/characters/10/level-up",
@@ -344,10 +335,7 @@ func TestDeleteCharacter(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can delete character by id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodDelete,
 				URL:    "/characters/1",
@@ -359,10 +347,7 @@ func TestDeleteCharacter(t *testing.T) {
 		},
 		{
 			TestName: "delete /characters/:id returns 404 not found on character id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
+			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
 				Method: http.MethodDelete,
 				URL:    "/characters/10",
