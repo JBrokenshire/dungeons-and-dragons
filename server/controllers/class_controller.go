@@ -44,7 +44,7 @@ func (c *ClassController) Update(ctx echo.Context) error {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 	if updatedClassRequest == nil {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid request body"))
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid class request body"))
 	}
 
 	if updatedClassRequest.Name == "" {

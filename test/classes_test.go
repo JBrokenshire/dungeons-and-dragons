@@ -118,6 +118,7 @@ func TestUpdateClass(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid class request body",
 			},
 		},
 		{
