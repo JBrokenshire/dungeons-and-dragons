@@ -51,8 +51,6 @@ func TestGetRace(t *testing.T) {
 		{
 			TestName: "can get race by id",
 			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("races")
 				ts.SetupDefaultRaces()
 			},
 			Request: helpers.Request{
@@ -67,8 +65,6 @@ func TestGetRace(t *testing.T) {
 		{
 			TestName: "get /races/:id returns 404 not found on race id not in database",
 			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("races")
 				ts.SetupDefaultRaces()
 			},
 			Request: helpers.Request{

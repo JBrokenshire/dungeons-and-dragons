@@ -95,6 +95,7 @@ func (ts *TestServer) ClearTable(tableName string) {
 }
 
 func (ts *TestServer) SetupDefaultClasses() {
+	ts.ClearTable("characters")
 	ts.ClearTable("classes")
 	classes := []*models2.Class{
 		{ID: 1, Name: "Artificer"},
@@ -118,6 +119,7 @@ func (ts *TestServer) SetupDefaultClasses() {
 }
 
 func (ts *TestServer) SetupDefaultRaces() {
+	ts.ClearTable("characters")
 	ts.ClearTable("races")
 	races := []*models2.Race{
 		{ID: 1, Name: "Aarakocra"},

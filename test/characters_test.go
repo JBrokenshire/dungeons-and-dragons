@@ -1,7 +1,7 @@
 package test
 
 import (
-	"dungeons-and-dragons/db/models"
+	"dungeons-and-dragons/server/requests"
 	"dungeons-and-dragons/test/helpers"
 	"net/http"
 	"testing"
@@ -57,7 +57,7 @@ func TestCreateCharacter(t *testing.T) {
 		{
 			TestName: "can create a new character from valid json in request body",
 			Request:  request,
-			RequestBody: models.Character{
+			RequestBody: requests.CharacterRequest{
 				Name:    "Test",
 				ClassID: 1,
 				RaceID:  1,
@@ -76,30 +76,42 @@ func TestCreateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "post /character/:id 500 internal server error on existing character id",
+			TestName: "post /character/:id 400 internal server error on invalid class id",
 			Request:  request,
-			RequestBody: models.Character{
-				ID:      1,
-				Name:    "test",
-				Level:   1,
-				ClassID: 1,
-				RaceID:  1,
-			},
-			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusInternalServerError,
-			},
-		},
-		{
-			TestName: "post /character/:id 500 internal server error on invalid class/race id",
-			Request:  request,
-			RequestBody: models.Character{
+			RequestBody: requests.CharacterRequest{
 				Name:    "test",
 				Level:   1,
 				ClassID: 1000,
 				RaceID:  1,
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusInternalServerError,
+				StatusCode: http.StatusBadRequest,
+			},
+		},
+		{
+			TestName: "post /character/:id 400 internal server error on invalid race id",
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				Name:    "test",
+				Level:   1,
+				ClassID: 1,
+				RaceID:  1000,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
+			},
+		},
+		{
+			TestName: "post /character/:id 400 internal server error on invalid level",
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				Name:    "test",
+				Level:   1000,
+				ClassID: 1,
+				RaceID:  1,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
 			},
 		},
 	}
@@ -163,7 +175,7 @@ func TestUpdateCharacter(t *testing.T) {
 				Method: http.MethodPut,
 				URL:    "/characters/1",
 			},
-			RequestBody: models.Character{
+			RequestBody: requests.CharacterRequest{
 				Name:    "Test",
 				ClassID: 1,
 				RaceID:  1,
@@ -184,7 +196,7 @@ func TestUpdateCharacter(t *testing.T) {
 				Method: http.MethodPut,
 				URL:    "/characters/10",
 			},
-			RequestBody: models.Character{},
+			RequestBody: requests.CharacterRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
 			},
@@ -213,10 +225,50 @@ func TestUpdateCharacter(t *testing.T) {
 				Method: http.MethodPut,
 				URL:    "/characters/1",
 			},
-			RequestBody: models.Character{},
+			RequestBody: requests.CharacterRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":4`, `"race_id":18`},
+			},
+		},
+		{
+			TestName: "put /character/:id returns 400 bad request on invalid class id",
+			Setup: func() {
+				ts.ClearTable("characters")
+				ts.SetupDefaultCharacters()
+			},
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    "/characters/1",
+			},
+			RequestBody: requests.CharacterRequest{
+				Name:    "Test",
+				ClassID: 1000,
+				RaceID:  1,
+				Level:   1,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
+			},
+		},
+		{
+			TestName: "put /character/:id returns 400 bad request on invalid race id",
+			Setup: func() {
+				ts.ClearTable("characters")
+				ts.SetupDefaultCharacters()
+			},
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    "/characters/1",
+			},
+			RequestBody: requests.CharacterRequest{
+				Name:    "Test",
+				ClassID: 1,
+				RaceID:  1000,
+				Level:   1,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
 			},
 		},
 	}

@@ -3,6 +3,7 @@ package controllers
 import (
 	"dungeons-and-dragons/db/models"
 	"dungeons-and-dragons/db/stores"
+	"dungeons-and-dragons/server/requests"
 	res "dungeons-and-dragons/server/responses"
 	"errors"
 	"github.com/labstack/echo/v4"
@@ -14,15 +15,31 @@ type CharacterController struct {
 }
 
 func (c *CharacterController) Create(ctx echo.Context) error {
-	newCharacter := new(models.Character)
+	requestCharacter := new(requests.CharacterRequest)
 
 	// Bind new character from request body
-	if err := ctx.Bind(&newCharacter); err != nil {
+	if err := ctx.Bind(&requestCharacter); err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
-
-	if newCharacter == nil {
+	if requestCharacter == nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid request body"))
+	}
+
+	if !c.Store.IsValidClassID(requestCharacter.ClassID) {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid classID"))
+	}
+	if !c.Store.IsValidRaceID(requestCharacter.RaceID) {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid raceID"))
+	}
+	if requestCharacter.Level < 1 || requestCharacter.Level > 20 {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid level"))
+	}
+
+	newCharacter := &models.Character{
+		Name:    requestCharacter.Name,
+		Level:   requestCharacter.Level,
+		ClassID: requestCharacter.ClassID,
+		RaceID:  requestCharacter.RaceID,
 	}
 
 	// Create new character in the character stores
@@ -56,12 +73,12 @@ func (c *CharacterController) Get(ctx echo.Context) error {
 
 func (c *CharacterController) Update(ctx echo.Context) error {
 	// Create new models to hold the updated character
-	updatedCharacter := new(models.Character)
+	updatedCharacterRequest := new(requests.CharacterRequest)
 	// Bind the new models to the request body
-	if err := ctx.Bind(&updatedCharacter); err != nil {
+	if err := ctx.Bind(&updatedCharacterRequest); err != nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
-	if updatedCharacter == nil {
+	if updatedCharacterRequest == nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid request body"))
 	}
 
@@ -70,18 +87,31 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
 
-	updatedCharacter.ID = existingCharacter.ID
-	if updatedCharacter.Name == "" {
-		updatedCharacter.Name = existingCharacter.Name
+	updatedCharacter := &models.Character{
+		ID:      existingCharacter.ID,
+		Name:    existingCharacter.Name,
+		Level:   existingCharacter.Level,
+		ClassID: existingCharacter.ClassID,
+		RaceID:  existingCharacter.RaceID,
 	}
-	if updatedCharacter.Level == 0 {
-		updatedCharacter.Level = existingCharacter.Level
+	if updatedCharacterRequest.Name != "" {
+		updatedCharacter.Name = updatedCharacterRequest.Name
 	}
-	if updatedCharacter.ClassID == 0 {
-		updatedCharacter.ClassID = existingCharacter.ClassID
+	if updatedCharacterRequest.Level != 0 {
+		updatedCharacter.Level = updatedCharacterRequest.Level
 	}
-	if updatedCharacter.RaceID == 0 {
-		updatedCharacter.RaceID = existingCharacter.RaceID
+	if updatedCharacterRequest.ClassID != 0 {
+		if !c.Store.IsValidClassID(updatedCharacterRequest.ClassID) {
+			return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid classID"))
+		}
+		updatedCharacter.ClassID = updatedCharacterRequest.ClassID
+	}
+	if updatedCharacterRequest.RaceID != 0 {
+
+		if !c.Store.IsValidRaceID(updatedCharacterRequest.RaceID) {
+			return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid raceID"))
+		}
+		updatedCharacter.RaceID = updatedCharacterRequest.RaceID
 	}
 
 	// Update the existing character in the stores with the updated information
@@ -90,7 +120,7 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
 
-	return c.Get(ctx)
+	return ctx.JSON(http.StatusOK, updatedCharacter)
 }
 
 func (c *CharacterController) LevelUp(ctx echo.Context) error {
