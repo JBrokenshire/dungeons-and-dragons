@@ -56,12 +56,12 @@ MySQL server running locally.
 | id            | int      | PK, AI   |
 | name          | string   | NN       |
 
-| Table Name    | characters |                     |
-|---------------|-----------|----------------------|
-| Column Name   | Type      | Notes                |
-| id            | int       | PK, AI               |
-| name          | string    | NN                   |
-| level         | int       | NN, Default: 1       |
-| class_id      | int       | NN, FK (classes.id)  |
-| race_id       | int       | NN, FK (races.id)    |
+| Table Name    | characters  |                     |
+|---------------|-------------|---------------------|
+| Column Name   | Type        | Notes               |
+| id            | int         | PK, AI              |
+| name          | string      | NN                  |
+| level         | int         | NN, Default: 1      |
+| class_id      | int         | NN, FK (classes.id) |
+| race_id       | int         | NN, FK (races.id)   |
 
