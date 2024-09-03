@@ -139,6 +139,9 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	}
 
 	character := new(models.Character)
+	if request.Name == "" {
+		return nil, errors.New("invalid character name")
+	}
 	if request.Level < 1 || request.Level > 20 {
 		return nil, errors.New("invalid character level")
 	}

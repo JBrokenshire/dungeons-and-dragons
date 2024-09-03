@@ -90,6 +90,19 @@ func TestCreateCharacter(t *testing.T) {
 			},
 		},
 		{
+			TestName: "post /character/:id 400 bad request on no character name",
+			Request:  request,
+			RequestBody: requests.CharacterRequest{
+				Level:   1,
+				ClassID: 1,
+				RaceID:  1,
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
+				BodyPart:   "invalid character name",
+			},
+		},
+		{
 			TestName: "post /character/:id 400 internal server error on invalid race id",
 			Request:  request,
 			RequestBody: requests.CharacterRequest{
