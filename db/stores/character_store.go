@@ -63,11 +63,6 @@ func (g *GormCharacterStore) Update(character *models.Character) error {
 	return g.DB.Save(character).Error
 }
 
-func (g *GormCharacterStore) LevelUp(character *models.Character) error {
-	character.Level++
-	return g.DB.Save(character).Error
-}
-
 func (g *GormCharacterStore) Delete(id interface{}) error {
 	_, err := g.Get(id)
 	if err != nil {

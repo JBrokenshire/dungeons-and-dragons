@@ -1,11 +1,10 @@
-package controller
+package controllers
 
 import (
 	"dungeons-and-dragons/db/stores"
 	res "dungeons-and-dragons/server/responses"
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"strconv"
 )
 
 type RaceController struct {
@@ -22,12 +21,7 @@ func (r *RaceController) GetAll(ctx echo.Context) error {
 }
 
 func (r *RaceController) Get(ctx echo.Context) error {
-	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
-	}
-
-	race, err := r.Store.Get(id)
+	race, err := r.Store.Get(ctx.Param("id"))
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}

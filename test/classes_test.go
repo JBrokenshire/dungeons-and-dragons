@@ -29,6 +29,7 @@ func TestGetAllClasses(t *testing.T) {
 		{
 			TestName: "can get list of classes (empty table)",
 			Setup: func() {
+				ts.ClearTable("characters")
 				ts.ClearTable("classes")
 			},
 			Request: helpers.Request{Method: http.MethodGet, URL: "/classes"},

@@ -2,12 +2,14 @@ package stores
 
 import (
 	"dungeons-and-dragons/db/models"
+	"errors"
 	"github.com/jinzhu/gorm"
+	"reflect"
 )
 
 type RaceStore interface {
 	GetAll() ([]*models.Race, error)
-	Get(id int) (*models.Race, error)
+	Get(id interface{}) (*models.Race, error)
 }
 
 type GormRaceStore struct {
@@ -29,7 +31,11 @@ func (s *GormRaceStore) GetAll() ([]*models.Race, error) {
 	return races, nil
 }
 
-func (s *GormRaceStore) Get(id int) (*models.Race, error) {
+func (s *GormRaceStore) Get(id interface{}) (*models.Race, error) {
+	if reflect.TypeOf(id).Kind() != reflect.String && reflect.TypeOf(id).Kind() != reflect.Int {
+		return nil, errors.New("id should be a string or int")
+	}
+
 	var race models.Race
 	if err := s.DB.Where("id = ?", id).First(&race).Error; err != nil {
 		return nil, err
