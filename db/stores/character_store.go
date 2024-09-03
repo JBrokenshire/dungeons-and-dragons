@@ -14,8 +14,6 @@ type CharacterStore interface {
 	Get(id interface{}) (*models.Character, error)
 	Update(character *models.Character) error
 	Delete(id interface{}) error
-	IsValidClassID(id interface{}) bool
-	IsValidRaceID(id interface{}) bool
 }
 
 type GormCharacterStore struct {
@@ -71,22 +69,4 @@ func (g *GormCharacterStore) Delete(id interface{}) error {
 		return err
 	}
 	return g.DB.Delete(&models.Character{}, "id = ?", id).Error
-}
-
-func (g *GormCharacterStore) IsValidClassID(id interface{}) bool {
-	var class models.Class
-	err := g.DB.Where("classes.id = ?", id).First(&class).Error
-	if err != nil {
-		return false
-	}
-	return true
-}
-
-func (g *GormCharacterStore) IsValidRaceID(id interface{}) bool {
-	var race models.Race
-	err := g.DB.Where("races.id = ?", id).First(&race).Error
-	if err != nil {
-		return false
-	}
-	return true
 }

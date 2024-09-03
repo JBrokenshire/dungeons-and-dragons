@@ -10,6 +10,7 @@ import (
 type RaceStore interface {
 	GetAll() ([]*models.Race, error)
 	Get(id interface{}) (*models.Race, error)
+	IsValidID(id interface{}) bool
 }
 
 type GormRaceStore struct {
@@ -41,4 +42,12 @@ func (s *GormRaceStore) Get(id interface{}) (*models.Race, error) {
 		return nil, err
 	}
 	return &race, nil
+}
+
+func (s *GormRaceStore) IsValidID(id interface{}) bool {
+	var race models.Race
+	if err := s.DB.Where("id = ?", id).First(&race).Error; err != nil {
+		return false
+	}
+	return true
 }

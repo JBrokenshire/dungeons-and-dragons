@@ -11,6 +11,7 @@ type ClassStore interface {
 	GetAll() ([]*models.Class, error)
 	Get(id interface{}) (*models.Class, error)
 	Update(class *models.Class) error
+	IsValidID(id interface{}) bool
 }
 
 type GormClassStore struct {
@@ -45,4 +46,12 @@ func (s *GormClassStore) Get(id interface{}) (*models.Class, error) {
 
 func (s *GormClassStore) Update(class *models.Class) error {
 	return s.db.Save(class).Error
+}
+
+func (s *GormClassStore) IsValidID(id interface{}) bool {
+	var class models.Class
+	if err := s.db.Where("id = ?", id).First(&class).Error; err != nil {
+		return false
+	}
+	return true
 }

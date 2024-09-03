@@ -9,9 +9,15 @@ import (
 )
 
 func ConfigureRoutes(server *server.Server) {
-	classController := controllers.ClassController{Store: stores.NewGormClassStore(server.Db)}
-	raceController := controllers.RaceController{Store: stores.NewGormRaceStore(server.Db)}
-	characterController := controllers.CharacterController{Store: stores.NewGormCharacterStore(server.Db)}
+	classStore := stores.NewGormClassStore(server.Db)
+	raceStore := stores.NewGormRaceStore(server.Db)
+	classController := controllers.ClassController{Store: classStore}
+	raceController := controllers.RaceController{Store: raceStore}
+	characterController := controllers.CharacterController{
+		CharacterStore: stores.NewGormCharacterStore(server.Db),
+		ClassStore:     classStore,
+		RaceStore:      raceStore,
+	}
 
 	server.Echo.GET("/", func(ctx echo.Context) error {
 		return ctx.Render(http.StatusOK, "hello", "Jared")

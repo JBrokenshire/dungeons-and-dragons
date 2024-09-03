@@ -202,7 +202,7 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 		},
 		{
-			TestName: "put /characters/:id 400 bad request on empty request body",
+			TestName: "put /characters/:id returns 400 bad request on empty request body",
 			Setup: func() {
 				ts.ClearTable("characters")
 				ts.SetupDefaultCharacters()

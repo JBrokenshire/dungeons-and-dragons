@@ -11,7 +11,9 @@ import (
 )
 
 type CharacterController struct {
-	Store stores.CharacterStore
+	CharacterStore stores.CharacterStore
+	ClassStore     stores.ClassStore
+	RaceStore      stores.RaceStore
 }
 
 func (c *CharacterController) Create(ctx echo.Context) error {
@@ -21,29 +23,13 @@ func (c *CharacterController) Create(ctx echo.Context) error {
 	if err := ctx.Bind(&requestCharacter); err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
-	if requestCharacter == nil {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid request body"))
-	}
-
-	if !c.Store.IsValidClassID(requestCharacter.ClassID) {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid classID"))
-	}
-	if !c.Store.IsValidRaceID(requestCharacter.RaceID) {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid raceID"))
-	}
-	if requestCharacter.Level < 1 || requestCharacter.Level > 20 {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid level"))
-	}
-
-	newCharacter := &models.Character{
-		Name:    requestCharacter.Name,
-		Level:   requestCharacter.Level,
-		ClassID: requestCharacter.ClassID,
-		RaceID:  requestCharacter.RaceID,
+	newCharacter, err := c.validateCharacterRequest(requestCharacter)
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 
 	// Create new character in the character stores
-	err := c.Store.Create(newCharacter)
+	err = c.CharacterStore.Create(newCharacter)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
@@ -53,7 +39,7 @@ func (c *CharacterController) Create(ctx echo.Context) error {
 }
 
 func (c *CharacterController) GetAll(ctx echo.Context) error {
-	characters, err := c.Store.GetAll()
+	characters, err := c.CharacterStore.GetAll()
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
@@ -63,7 +49,7 @@ func (c *CharacterController) GetAll(ctx echo.Context) error {
 
 func (c *CharacterController) Get(ctx echo.Context) error {
 	// Get character using that ID
-	character, err := c.Store.Get(ctx.Param("id"))
+	character, err := c.CharacterStore.Get(ctx.Param("id"))
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
@@ -72,50 +58,37 @@ func (c *CharacterController) Get(ctx echo.Context) error {
 }
 
 func (c *CharacterController) Update(ctx echo.Context) error {
+	existingCharacter, err := c.CharacterStore.Get(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
 	// Create new models to hold the updated character
 	updatedCharacterRequest := new(requests.CharacterRequest)
 	// Bind the new models to the request body
 	if err := ctx.Bind(&updatedCharacterRequest); err != nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
+
+	// Request body is empty
 	if updatedCharacterRequest == nil {
-		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid request body"))
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid character request body"))
 	}
 
-	existingCharacter, err := c.Store.Get(ctx.Param("id"))
+	// Request body contains a Character with no fields assigned
+	if updatedCharacterRequest.IsEmpty() {
+		return ctx.JSON(http.StatusOK, existingCharacter)
+	}
+
+	updatedCharacter, err := c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
-		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 
-	updatedCharacter := &models.Character{
-		ID:      existingCharacter.ID,
-		Name:    existingCharacter.Name,
-		Level:   existingCharacter.Level,
-		ClassID: existingCharacter.ClassID,
-		RaceID:  existingCharacter.RaceID,
-	}
-	if updatedCharacterRequest.Name != "" {
-		updatedCharacter.Name = updatedCharacterRequest.Name
-	}
-	if updatedCharacterRequest.Level != 0 {
-		updatedCharacter.Level = updatedCharacterRequest.Level
-	}
-	if updatedCharacterRequest.ClassID != 0 {
-		if !c.Store.IsValidClassID(updatedCharacterRequest.ClassID) {
-			return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid classID"))
-		}
-		updatedCharacter.ClassID = updatedCharacterRequest.ClassID
-	}
-	if updatedCharacterRequest.RaceID != 0 {
-
-		if !c.Store.IsValidRaceID(updatedCharacterRequest.RaceID) {
-			return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("invalid raceID"))
-		}
-		updatedCharacter.RaceID = updatedCharacterRequest.RaceID
-	}
+	updatedCharacter.ID = existingCharacter.ID
 
 	// Update the existing character in the stores with the updated information
-	err = c.Store.Update(updatedCharacter)
+	err = c.CharacterStore.Update(updatedCharacter)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
@@ -124,14 +97,14 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 }
 
 func (c *CharacterController) LevelUp(ctx echo.Context) error {
-	character, err := c.Store.Get(ctx.Param("id"))
+	character, err := c.CharacterStore.Get(ctx.Param("id"))
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
 
 	character.Level++
 
-	err = c.Store.Update(character)
+	err = c.CharacterStore.Update(character)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
@@ -140,10 +113,34 @@ func (c *CharacterController) LevelUp(ctx echo.Context) error {
 }
 
 func (c *CharacterController) Delete(ctx echo.Context) error {
-	err := c.Store.Delete(ctx.Param("id"))
+	err := c.CharacterStore.Delete(ctx.Param("id"))
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
 
 	return ctx.JSON(http.StatusOK, "character successfully deleted")
+}
+
+func (c *CharacterController) validateCharacterRequest(request *requests.CharacterRequest) (*models.Character, error) {
+	if request == nil {
+		return nil, errors.New("invalid request body")
+	}
+
+	character := new(models.Character)
+	if request.Level < 1 || request.Level > 20 {
+		return nil, errors.New("invalid character level")
+	}
+	if !c.ClassStore.IsValidID(request.ClassID) {
+		return nil, errors.New("invalid character classID")
+	}
+	if !c.RaceStore.IsValidID(request.RaceID) {
+		return nil, errors.New("invalid character raceID")
+	}
+
+	character.Name = request.Name
+	character.Level = request.Level
+	character.ClassID = request.ClassID
+	character.RaceID = request.RaceID
+
+	return character, nil
 }
