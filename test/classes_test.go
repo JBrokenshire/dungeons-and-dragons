@@ -1,7 +1,7 @@
 package test
 
 import (
-	"dungeons-and-dragons/db/models"
+	"dungeons-and-dragons/server/requests"
 	"dungeons-and-dragons/test/helpers"
 	"net/http"
 	"testing"
@@ -11,12 +11,8 @@ func TestGetAllClasses(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can get list of classes (populated table)",
-			Setup: func() {
-				ts.ClearTable("characters") // Have to clear characters first because of foreign key constraint
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
-			Request: helpers.Request{Method: http.MethodGet, URL: "/classes"},
+			Setup:    ts.SetupDefaultClasses,
+			Request:  helpers.Request{Method: http.MethodGet, URL: "/classes"},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
@@ -51,11 +47,7 @@ func TestGetClass(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can get class by id",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/classes/1",
@@ -67,17 +59,14 @@ func TestGetClass(t *testing.T) {
 		},
 		{
 			TestName: "get /classes/:id returns 404 not found on class id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/classes/100",
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
+				BodyPart:   "record not found",
 			},
 		},
 	}
@@ -93,16 +82,12 @@ func TestUpdateClass(t *testing.T) {
 	cases := []helpers.TestCase{
 		{
 			TestName: "can update class by id with valid json in request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/classes/1",
 			},
-			RequestBody: models.Class{
+			RequestBody: requests.ClassRequest{
 				Name:        "Test Name",
 				Description: "Test Description",
 			},
@@ -113,27 +98,20 @@ func TestUpdateClass(t *testing.T) {
 		},
 		{
 			TestName: "put /classes/:id returns 404 not found on class id not in database",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/classes/100",
 			},
-			RequestBody: models.Class{},
+			RequestBody: requests.ClassRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusNotFound,
+				BodyPart:   "record not found",
 			},
 		},
 		{
 			TestName: "put /classes/:id returns 400 bad request on empty request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/classes/1",
@@ -144,16 +122,12 @@ func TestUpdateClass(t *testing.T) {
 		},
 		{
 			TestName: "put /classes/:id no update on empty class in request body",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.ClearTable("classes")
-				ts.SetupDefaultClasses()
-			},
+			Setup:    ts.SetupDefaultClasses,
 			Request: helpers.Request{
 				Method: http.MethodPut,
 				URL:    "/classes/1",
 			},
-			RequestBody: models.Class{},
+			RequestBody: requests.ClassRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts:  []string{`"id":1`, `"name":"Artificer"`},
