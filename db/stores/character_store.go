@@ -49,8 +49,6 @@ func (g *GormCharacterStore) Get(id interface{}) (*models.Character, error) {
 
 	var character models.Character
 	if err := g.DB.
-		Preload("Class").
-		Preload("Race").
 		Where("characters.id = ?", id).
 		First(&character).Error; err != nil {
 		return nil, errors.New(fmt.Sprintf("character with id %q not found", id))

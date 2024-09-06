@@ -91,21 +91,23 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.RaceID == 0 {
 		updatedCharacterRequest.RaceID = existingCharacter.RaceID
 	}
-
-	updatedCharacter, err := c.validateCharacterRequest(updatedCharacterRequest)
+	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 
-	updatedCharacter.ID = existingCharacter.ID
+	existingCharacter.Name = updatedCharacterRequest.Name
+	existingCharacter.Level = updatedCharacterRequest.Level
+	existingCharacter.ClassID = updatedCharacterRequest.ClassID
+	existingCharacter.RaceID = updatedCharacterRequest.RaceID
 
 	// Update the existing character in the stores with the updated information
-	err = c.CharacterStore.Update(updatedCharacter)
+	err = c.CharacterStore.Update(existingCharacter)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, updatedCharacter)
+	return ctx.JSON(http.StatusOK, existingCharacter)
 }
 
 func (c *CharacterController) LevelUp(ctx echo.Context) error {
@@ -142,8 +144,10 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	if request.Name == "" {
 		return nil, errors.New("invalid character name")
 	}
-	if request.Level < 1 || request.Level > 20 {
-		return nil, errors.New("invalid character level")
+	if request.Level != 0 {
+		if request.Level < 1 || request.Level > 20 {
+			return nil, errors.New("invalid character level")
+		}
 	}
 	if !c.ClassStore.IsValidID(request.ClassID) {
 		return nil, errors.New("invalid character classID")
