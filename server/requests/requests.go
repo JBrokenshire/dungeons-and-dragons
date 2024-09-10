@@ -24,6 +24,7 @@ func (cr CharacterRequest) IsEmpty() bool {
 }
 
 type ClassRequest struct {
-	Name        string
-	Description string
+	Name             string
+	ShortDescription string
+	LongDescription  string
 }

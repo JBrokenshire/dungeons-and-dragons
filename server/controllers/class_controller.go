@@ -50,14 +50,18 @@ func (c *ClassController) Update(ctx echo.Context) error {
 	if updatedClassRequest.Name == "" {
 		updatedClassRequest.Name = existingClass.Name
 	}
-	if updatedClassRequest.Description == "" {
-		updatedClassRequest.Description = existingClass.Description
+	if updatedClassRequest.ShortDescription == "" {
+		updatedClassRequest.ShortDescription = existingClass.ShortDescription
+	}
+	if updatedClassRequest.LongDescription == "" {
+		updatedClassRequest.LongDescription = existingClass.LongDescription
 	}
 
 	updatedClass := &models.Class{
-		ID:          existingClass.ID,
-		Name:        updatedClassRequest.Name,
-		Description: updatedClassRequest.Description,
+		ID:               existingClass.ID,
+		Name:             updatedClassRequest.Name,
+		ShortDescription: updatedClassRequest.ShortDescription,
+		LongDescription:  updatedClassRequest.LongDescription,
 	}
 
 	err = c.Store.Update(updatedClass)
