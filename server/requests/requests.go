@@ -6,7 +6,14 @@ type CharacterRequest struct {
 	ProfilePictureURL string `json:"profile_picture_url"`
 	ClassID           int    `json:"class_id"`
 	RaceID            int    `json:"race_id"`
-	isEmpty           func() bool
+	Strength          int    `json:"strength"`
+	Dexterity         int    `json:"dexterity"`
+	Constitution      int    `json:"constitution"`
+	Intelligence      int    `json:"intelligence"`
+	Wisdom            int    `json:"wisdom"`
+	Charisma          int    `json:"charisma"`
+
+	isEmpty func() bool
 }
 
 func (cr CharacterRequest) IsEmpty() bool {

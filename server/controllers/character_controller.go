@@ -91,6 +91,25 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.RaceID == 0 {
 		updatedCharacterRequest.RaceID = existingCharacter.RaceID
 	}
+	if updatedCharacterRequest.Strength == 0 {
+		updatedCharacterRequest.Strength = existingCharacter.Strength
+	}
+	if updatedCharacterRequest.Dexterity == 0 {
+		updatedCharacterRequest.Dexterity = existingCharacter.Dexterity
+	}
+	if updatedCharacterRequest.Constitution == 0 {
+		updatedCharacterRequest.Constitution = existingCharacter.Constitution
+	}
+	if updatedCharacterRequest.Intelligence == 0 {
+		updatedCharacterRequest.Intelligence = existingCharacter.Intelligence
+	}
+	if updatedCharacterRequest.Wisdom == 0 {
+		updatedCharacterRequest.Wisdom = existingCharacter.Wisdom
+	}
+	if updatedCharacterRequest.Charisma == 0 {
+		updatedCharacterRequest.Charisma = existingCharacter.Charisma
+	}
+
 	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
@@ -165,6 +184,12 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	character.ClassID = request.ClassID
 	character.RaceID = request.RaceID
 	character.ProfilePictureURL = request.ProfilePictureURL
+	character.Strength = request.Strength
+	character.Dexterity = request.Dexterity
+	character.Constitution = request.Constitution
+	character.Intelligence = request.Intelligence
+	character.Wisdom = request.Wisdom
+	character.Charisma = request.Charisma
 
 	return character, nil
 }
