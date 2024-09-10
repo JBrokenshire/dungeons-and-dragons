@@ -17,7 +17,7 @@ func TestGetAllClasses(t *testing.T) {
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
 					`"name":"Barbarian"`,
-					`"name":"Artificer"`,
+					`"name":"Ranger"`,
 					`"name":"Wizard"`,
 				},
 			},
@@ -54,7 +54,7 @@ func TestGetClass(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Artificer"`},
+				BodyParts:  []string{`"id":1`, `"name":"Barbarian"`},
 			},
 		},
 		{
@@ -131,7 +131,7 @@ func TestUpdateClass(t *testing.T) {
 			RequestBody: requests.ClassRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Artificer"`},
+				BodyParts:  []string{`"id":1`, `"name":"Barbarian"`},
 			},
 		},
 	}

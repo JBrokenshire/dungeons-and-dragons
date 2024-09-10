@@ -1,11 +1,12 @@
 package requests
 
 type CharacterRequest struct {
-	Name    string `json:"name"`
-	Level   int    `json:"level"`
-	ClassID int    `json:"class_id"`
-	RaceID  int    `json:"race_id"`
-	isEmpty func() bool
+	Name              string `json:"name"`
+	Level             int    `json:"level"`
+	ProfilePictureURL string `json:"profile_picture_url"`
+	ClassID           int    `json:"class_id"`
+	RaceID            int    `json:"race_id"`
+	isEmpty           func() bool
 }
 
 func (cr CharacterRequest) IsEmpty() bool {

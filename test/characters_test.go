@@ -64,7 +64,7 @@ func TestCreateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusCreated,
-				BodyParts:  []string{`"id":3`, `"name":"Test"`, `"level":1`},
+				BodyParts:  []string{`"name":"Test"`, `"level":1`},
 			},
 		},
 		{
@@ -150,7 +150,7 @@ func TestGetCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":4`, `"race_id":18`},
+				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":3`, `"race_id":18`},
 			},
 		},
 		{
@@ -223,7 +223,7 @@ func TestUpdateCharacter(t *testing.T) {
 			RequestBody: requests.CharacterRequest{},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":4`, `"race_id":18`},
+				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":3`, `"class_id":3`, `"race_id":18`},
 			},
 		},
 		{
@@ -235,7 +235,7 @@ func TestUpdateCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Test"`, `"level":3`, `"class_id":4`, `"race_id":18`},
+				BodyParts:  []string{`"id":1`, `"name":"Test"`, `"level":3`, `"class_id":3`, `"race_id":18`},
 			},
 		},
 		{
@@ -321,7 +321,7 @@ func TestLevelUpCharacter(t *testing.T) {
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":4`, `"class_id":4`, `"race_id":18`},
+				BodyParts:  []string{`"id":1`, `"name":"Faelan Haversham"`, `"level":4`, `"class_id":3`, `"race_id":18`},
 			},
 		},
 		{

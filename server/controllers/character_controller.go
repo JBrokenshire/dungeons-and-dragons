@@ -96,10 +96,14 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 
-	existingCharacter.Name = updatedCharacterRequest.Name
-	existingCharacter.Level = updatedCharacterRequest.Level
-	existingCharacter.ClassID = updatedCharacterRequest.ClassID
-	existingCharacter.RaceID = updatedCharacterRequest.RaceID
+	existingCharacter = &models.Character{
+		ID:                existingCharacter.ID,
+		Name:              updatedCharacterRequest.Name,
+		Level:             updatedCharacterRequest.Level,
+		ProfilePictureURL: updatedCharacterRequest.ProfilePictureURL,
+		ClassID:           updatedCharacterRequest.ClassID,
+		RaceID:            updatedCharacterRequest.RaceID,
+	}
 
 	// Update the existing character in the stores with the updated information
 	err = c.CharacterStore.Update(existingCharacter)
@@ -160,6 +164,7 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	character.Level = request.Level
 	character.ClassID = request.ClassID
 	character.RaceID = request.RaceID
+	character.ProfilePictureURL = request.ProfilePictureURL
 
 	return character, nil
 }

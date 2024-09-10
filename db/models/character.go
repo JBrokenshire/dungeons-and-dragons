@@ -8,6 +8,6 @@ type Character struct {
 	ClassID           int    `json:"class_id"`
 	RaceID            int    `json:"race_id"`
 
-	Class *Class `json:"class" gorm:"foreignKey:ClassID;references:ID"`
-	Race  *Race  `json:"race" gorm:"foreignKey:RaceID;references:ID"`
+	Class Class `json:"class"`
+	Race  Race  `json:"race"`
 }

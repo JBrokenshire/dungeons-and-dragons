@@ -60,7 +60,7 @@ func (g *GormCharacterStore) Get(id interface{}) (*models.Character, error) {
 		First(&class).Error; err != nil {
 		return nil, errors.New(fmt.Sprintf("class with id %q not found", id))
 	}
-	character.Class = &class
+	character.Class = class
 
 	var race models.Race
 	if err := g.DB.
@@ -68,13 +68,13 @@ func (g *GormCharacterStore) Get(id interface{}) (*models.Character, error) {
 		First(&race).Error; err != nil {
 		return nil, errors.New(fmt.Sprintf("race with id %q not found", id))
 	}
-	character.Race = &race
+	character.Race = race
 
 	return &character, nil
 }
 
 func (g *GormCharacterStore) Update(character *models.Character) error {
-	return g.DB.Save(character).Error
+	return g.DB.Save(&character).Error
 }
 
 func (g *GormCharacterStore) Delete(id interface{}) error {
