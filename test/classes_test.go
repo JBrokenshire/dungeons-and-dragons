@@ -88,12 +88,12 @@ func TestUpdateClass(t *testing.T) {
 				URL:    "/classes/1",
 			},
 			RequestBody: requests.ClassRequest{
-				Name:        "Test Name",
-				Description: "Test Description",
+				Name:             "Test Name",
+				ShortDescription: "Test Description",
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
-				BodyParts:  []string{`"id":1`, `"name":"Test Name"`, `"description":"Test Description"`},
+				BodyParts:  []string{`"id":1`, `"name":"Test Name"`, `"short_description":"Test Description"`},
 			},
 		},
 		{
