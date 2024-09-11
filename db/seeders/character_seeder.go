@@ -26,14 +26,14 @@ func (s *Seeder) SetCharacters() {
 			Name:    "Zelphar Qinhice",
 			Level:   6,
 			ClassID: 8,
-			RaceID:  18,
+			RaceID:  6,
 		},
 		{
 			ID:                4,
 			Name:              "Iratham Veomakute",
 			Level:             3,
 			ClassID:           3,
-			RaceID:            3,
+			RaceID:            14,
 			ProfilePictureURL: "https://www.dndbeyond.com/avatars/36645/678/1581111423-94761552.jpeg?width=150&height=150&fit=crop&quality=95&auto=webp",
 		},
 	}
