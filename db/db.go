@@ -4,7 +4,6 @@ import (
 	"dungeons-and-dragons/db/seeders"
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 
@@ -15,11 +14,6 @@ var db *gorm.DB
 var err error
 
 func Init() *gorm.DB {
-	envErr := godotenv.Load(".env")
-	if envErr != nil {
-		log.Fatalf("Error loading .env file: %v", envErr)
-	}
-
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
