@@ -5,6 +5,7 @@ import (
 	"dungeons-and-dragons/server/routes"
 	"github.com/joho/godotenv"
 	"log"
+	"os"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 
 	routes.ConfigureRoutes(app)
 
-	err = app.Start("8080")
+	err = app.Start(os.Getenv("PORT"))
 	if err != nil {
 		log.Fatal("Port already in use")
 	}
