@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"dungeons-and-dragons/db/stores"
-	"dungeons-and-dragons/server"
-	"dungeons-and-dragons/server/controllers"
+	"dnd-api/db/stores"
+	"dnd-api/server"
+	"dnd-api/server/controllers"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

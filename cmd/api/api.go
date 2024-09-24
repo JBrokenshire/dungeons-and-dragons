@@ -1,8 +1,8 @@
 package main
 
 import (
-	"dungeons-and-dragons/server"
-	"dungeons-and-dragons/server/routes"
+	"dnd-api/server"
+	"dnd-api/server/routes"
 	"github.com/joho/godotenv"
 	"log"
 	"os"

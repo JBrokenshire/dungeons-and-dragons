@@ -1,8 +1,8 @@
 package server
 
 import (
-	"dungeons-and-dragons/db"
-	"dungeons-and-dragons/db/stores"
+	"dnd-api/db"
+	"dnd-api/db/stores"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 )

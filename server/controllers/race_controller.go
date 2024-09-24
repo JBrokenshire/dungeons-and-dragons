@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"dungeons-and-dragons/db/stores"
-	res "dungeons-and-dragons/server/responses"
+	"dnd-api/db/stores"
+	res "dnd-api/server/responses"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

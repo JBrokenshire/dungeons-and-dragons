@@ -1,5 +1,10 @@
 package models
 
+import (
+	"errors"
+	"github.com/jinzhu/gorm"
+)
+
 type Character struct {
 	ID                int    `gorm:"autoIncrement;primary_key" json:"id"`
 	Name              string `gorm:"not null" json:"name"`
@@ -16,4 +21,58 @@ type Character struct {
 
 	Class Class `json:"class"`
 	Race  Race  `json:"race"`
+}
+
+func (c *Character) BeforeCreate(tx *gorm.DB) error {
+	err := validateStats(c)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateStats(c *Character) error {
+	if c.Strength == 0 {
+		c.Strength = 10
+	}
+	if !isValidStat(c.Strength) {
+		return errors.New("invalid Strength")
+	}
+	if c.Dexterity == 0 {
+		c.Dexterity = 10
+	}
+	if !isValidStat(c.Dexterity) {
+		return errors.New("invalid Dexterity")
+	}
+	if c.Constitution == 0 {
+		c.Constitution = 10
+	}
+	if !isValidStat(c.Constitution) {
+		return errors.New("invalid Constitution")
+	}
+	if c.Intelligence == 0 {
+		c.Intelligence = 10
+	}
+	if !isValidStat(c.Intelligence) {
+		return errors.New("invalid Intelligence")
+	}
+	if c.Wisdom == 0 {
+		c.Wisdom = 10
+	}
+	if !isValidStat(c.Wisdom) {
+		return errors.New("invalid Wisdom")
+	}
+	if c.Charisma == 0 {
+		c.Charisma = 10
+	}
+	if !isValidStat(c.Charisma) {
+		return errors.New("invalid Charisma")
+	}
+
+	return nil
+}
+
+func isValidStat(stat int) bool {
+	return stat >= 1 && stat <= 20
 }

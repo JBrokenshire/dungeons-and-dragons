@@ -1,7 +1,7 @@
 package stores
 
 import (
-	"dungeons-and-dragons/db/models"
+	"dnd-api/db/models"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"

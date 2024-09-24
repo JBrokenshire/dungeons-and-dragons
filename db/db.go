@@ -1,7 +1,7 @@
 package db
 
 import (
-	"dungeons-and-dragons/db/seeders"
+	"dnd-api/db/seeders"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"log"

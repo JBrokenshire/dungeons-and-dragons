@@ -1,7 +1,7 @@
 package seeders
 
 import (
-	"dungeons-and-dragons/db/models"
+	"dnd-api/db/models"
 	"log"
 )
 

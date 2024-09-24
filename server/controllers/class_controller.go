@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"dungeons-and-dragons/db/models"
-	"dungeons-and-dragons/db/stores"
-	"dungeons-and-dragons/server/requests"
-	res "dungeons-and-dragons/server/responses"
+	"dnd-api/db/models"
+	"dnd-api/db/stores"
+	"dnd-api/server/requests"
+	res "dnd-api/server/responses"
 	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"

@@ -1,7 +1,7 @@
 package test
 
 import (
-	"dungeons-and-dragons/test/helpers"
+	"dnd-api/test/helpers"
 	"net/http"
 	"testing"
 )

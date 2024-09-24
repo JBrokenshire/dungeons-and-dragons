@@ -2,10 +2,10 @@ package helpers
 
 import (
 	"bytes"
-	"dungeons-and-dragons/db/seeders"
-	"dungeons-and-dragons/db/stores"
-	"dungeons-and-dragons/server"
-	"dungeons-and-dragons/server/routes"
+	"dnd-api/db/seeders"
+	"dnd-api/db/stores"
+	"dnd-api/server"
+	"dnd-api/server/routes"
 	"encoding/json"
 	"fmt"
 	"github.com/jinzhu/gorm"
