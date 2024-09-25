@@ -19,6 +19,7 @@ type Character struct {
 	Wisdom               int    `gorm:"not null" json:"wisdom"`
 	Charisma             int    `gorm:"not null" json:"charisma"`
 	WalkingSpeedModifier int    `gorm:"not null" json:"walking_speed_modifier"`
+	Inspiration          bool   `gorm:"not null" json:"inspiration"`
 
 	Class Class `json:"class"`
 	Race  Race  `json:"race"`

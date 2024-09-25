@@ -28,6 +28,7 @@ func (m *CreateCharactersTable) Up(con *sqlx.DB) {
 	table.Integer("wisdom").NotNull().Default("10")
 	table.Integer("charisma").NotNull().Default("10")
 	table.Integer("walking_speed_modifier").NotNull().Default("0")
+	table.Column("inspiration").Type("boolean").NotNull().Default("0")
 	table.WithTimestamps()
 	table.MustExec()
 }

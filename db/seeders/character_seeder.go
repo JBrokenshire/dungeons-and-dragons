@@ -74,6 +74,7 @@ func (s *Seeder) SetCharacters() {
 			Intelligence:      6,
 			Wisdom:            14,
 			Charisma:          11,
+			Inspiration:       true,
 		},
 	}
 
