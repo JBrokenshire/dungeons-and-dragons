@@ -17,7 +17,6 @@ func (m *CreateClassesTable) Up(con *sqlx.DB) {
 	table.String("name", 255).NotNull()
 	table.Column("short_description").Type("MEDIUMTEXT").Nullable()
 	table.Column("long_description").Type("LONGTEXT").Nullable()
-	table.String("colour", 7).NotNull()
 	table.WithTimestamps()
 	table.MustExec()
 }
