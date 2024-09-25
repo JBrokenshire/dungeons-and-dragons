@@ -17,6 +17,7 @@ func (m *CreateRacesTable) Up(con *sqlx.DB) {
 	table.String("name", 255).NotNull()
 	table.Column("short_description").Type("MEDIUMTEXT").Nullable()
 	table.Column("long_description").Type("LONGTEXT").Nullable()
+	table.Integer("base_walking_speed").NotNull()
 	table.WithTimestamps()
 	table.MustExec()
 }

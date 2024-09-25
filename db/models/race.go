@@ -5,4 +5,5 @@ type Race struct {
 	Name             string `json:"name"`
 	ShortDescription string `json:"short_description"`
 	LongDescription  string `json:"long_description"`
+	BaseWalkingSpeed int    `json:"base_walking_speed"`
 }
