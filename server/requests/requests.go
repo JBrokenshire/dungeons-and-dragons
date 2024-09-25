@@ -17,7 +17,7 @@ type CharacterRequest struct {
 }
 
 func (cr CharacterRequest) IsEmpty() bool {
-	if cr.Name == "" && cr.Level == 0 && cr.ClassID == 0 && cr.RaceID == 0 {
+	if cr.Name == "" && cr.Level == 0 && cr.ClassID == 0 && cr.RaceID == 0 && cr.Strength == 0 && cr.Dexterity == 0 && cr.Constitution == 0 && cr.Intelligence == 0 && cr.Wisdom == 0 && cr.Charisma == 0 {
 		return true
 	}
 	return false

@@ -15,7 +15,7 @@ services:
     environment:
       - DB_CONNECTION=${DB_HOST}:${DB_PORT}
       - WAIT_HOSTS=${DB_HOST}:${DB_PORT}
-      - WAIT_BEFORE_HOSTS=6
+      - WAIT_BEFORE_HOSTS=5
       - WAIT_SLEEP_INTERVAL=3
     networks:
       - dnd-stack

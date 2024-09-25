@@ -122,6 +122,12 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		ProfilePictureURL: updatedCharacterRequest.ProfilePictureURL,
 		ClassID:           updatedCharacterRequest.ClassID,
 		RaceID:            updatedCharacterRequest.RaceID,
+		Strength:          updatedCharacterRequest.Strength,
+		Dexterity:         updatedCharacterRequest.Dexterity,
+		Constitution:      updatedCharacterRequest.Constitution,
+		Intelligence:      updatedCharacterRequest.Intelligence,
+		Wisdom:            updatedCharacterRequest.Wisdom,
+		Charisma:          updatedCharacterRequest.Charisma,
 	}
 
 	// Update the existing character in the stores with the updated information
