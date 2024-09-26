@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  dnd_mysql_test:
+    image: mysql
+    platform: linux/x86_64
+    container_name: dnd_db_test
+    env_file:
+      - .env
+    ports:
+      - ${TEST_EXPOSE_DB_PORT}:${DB_PORT}
+    environment:
+      - MYSQL_ROOT_HOST=${DB_HOST}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - dnd_db_test:/var/lib/mysql
+
+volumes:
+  dnd_db_test:

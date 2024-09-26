@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"bytes"
+	"dnd-api/db/migrations/process"
 	"dnd-api/db/seeders"
 	"dnd-api/db/stores"
 	"dnd-api/server"
@@ -31,9 +32,9 @@ func NewTestServer() *TestServer {
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("TEST_DB_NAME"),
+		os.Getenv("TEST_DB_HOST"),
+		os.Getenv("TEST_EXPOSE_DB_PORT"),
+		os.Getenv("DB_NAME"),
 	)
 
 	db, err := gorm.Open("mysql", dataSourceName)
@@ -50,9 +51,18 @@ func NewTestServer() *TestServer {
 		seeder: seeders.NewSeeder(db),
 	}
 
+	ts.migrateDatabase()
+
 	routes.ConfigureRoutes(ts.S)
 
 	return ts
+}
+
+func (ts *TestServer) migrateDatabase() {
+	// This project requires DB_PORT and DB_HOST loaded from .env automatically. Let's make them match
+	_ = os.Setenv("DB_HOST", os.Getenv("TEST_DB_HOST"))
+	_ = os.Setenv("DB_PORT", os.Getenv("TEST_EXPOSE_DB_PORT"))
+	process.Run()
 }
 
 func (ts *TestServer) ExecuteTestCase(testCase *TestCase) *httptest.ResponseRecorder {

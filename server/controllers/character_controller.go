@@ -175,6 +175,22 @@ func (c *CharacterController) LevelUp(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, character)
 }
 
+func (c *CharacterController) ToggleInspiration(ctx echo.Context) error {
+	character, err := c.CharacterStore.Get(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	character.Inspiration = !character.Inspiration
+
+	err = c.CharacterStore.Update(character)
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, character)
+}
+
 func (c *CharacterController) Delete(ctx echo.Context) error {
 	err := c.CharacterStore.Delete(ctx.Param("id"))
 	if err != nil {

@@ -36,6 +36,7 @@ func ConfigureRoutes(server *server.Server) {
 	server.Echo.GET("/characters/:id", characterController.Get)
 	server.Echo.PUT("/characters/:id", characterController.Update)
 	server.Echo.DELETE("/characters/:id", characterController.Delete)
+	server.Echo.GET("/characters/:id/inspiration", characterController.ToggleInspiration)
 
 	server.Echo.PUT("/characters/:id/level-up", characterController.LevelUp)
 }

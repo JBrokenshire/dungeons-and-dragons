@@ -3,6 +3,7 @@ package test
 import (
 	"dnd-api/server/requests"
 	"dnd-api/test/helpers"
+	"fmt"
 	"net/http"
 	"testing"
 )
@@ -52,19 +53,19 @@ func TestCreateCharacter(t *testing.T) {
 		URL:    "/characters",
 	}
 
+	characterRequest := requests.NewCharacterRequest(&requests.CharacterRequest{})
+
 	cases := []helpers.TestCase{
 		{
-			TestName: "can create a new character from valid json in request body",
-			Request:  request,
-			RequestBody: requests.CharacterRequest{
-				Name:    "Test",
-				ClassID: 1,
-				RaceID:  1,
-				Level:   1,
-			},
+			TestName:    "can create a new character from valid json in request body",
+			Request:     request,
+			RequestBody: characterRequest,
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusCreated,
-				BodyParts:  []string{`"name":"Test"`, `"level":1`},
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, characterRequest.Name),
+					fmt.Sprintf(`"level":%v`, characterRequest.Level),
+				},
 			},
 		},
 		{
