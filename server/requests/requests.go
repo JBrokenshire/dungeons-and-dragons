@@ -6,14 +6,19 @@ type CharacterRequest struct {
 	ProfilePictureURL string `json:"profile_picture_url"`
 	ClassID           int    `json:"class_id"`
 	RaceID            int    `json:"race_id"`
-	Strength          int    `json:"strength"`
-	Dexterity         int    `json:"dexterity"`
-	Constitution      int    `json:"constitution"`
-	Intelligence      int    `json:"intelligence"`
-	Wisdom            int    `json:"wisdom"`
-	Charisma          int    `json:"charisma"`
 
-	isEmpty func() bool
+	Strength     int `json:"strength"`
+	Dexterity    int `json:"dexterity"`
+	Constitution int `json:"constitution"`
+	Intelligence int `json:"intelligence"`
+	Wisdom       int `json:"wisdom"`
+	Charisma     int `json:"charisma"`
+
+	WalkingSpeedModifier int  `json:"walking_speed_modifier"`
+	Inspiration          bool `json:"inspiration"`
+	CurrentHitPoints     int  `json:"current_hit_points"`
+	MaxHitPoints         int  `json:"max_hit_points"`
+	TempHitPoints        int  `json:"temp_hit_points"`
 }
 
 func (cr CharacterRequest) IsEmpty() bool {

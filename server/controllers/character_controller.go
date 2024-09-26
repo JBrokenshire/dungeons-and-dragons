@@ -66,7 +66,7 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	// Create new models to hold the updated character
 	updatedCharacterRequest := new(requests.CharacterRequest)
 	// Bind the new models to the request body
-	if err := ctx.Bind(&updatedCharacterRequest); err != nil {
+	if err = ctx.Bind(&updatedCharacterRequest); err != nil {
 		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
 	}
 
@@ -109,6 +109,21 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.Charisma == 0 {
 		updatedCharacterRequest.Charisma = existingCharacter.Charisma
 	}
+	if updatedCharacterRequest.WalkingSpeedModifier == 0 {
+		updatedCharacterRequest.WalkingSpeedModifier = existingCharacter.WalkingSpeedModifier
+	}
+	if existingCharacter.Inspiration {
+		updatedCharacterRequest.Inspiration = existingCharacter.Inspiration
+	}
+	if updatedCharacterRequest.CurrentHitPoints == 0 {
+		updatedCharacterRequest.CurrentHitPoints = existingCharacter.CurrentHitPoints
+	}
+	if updatedCharacterRequest.MaxHitPoints == 0 {
+		updatedCharacterRequest.MaxHitPoints = existingCharacter.MaxHitPoints
+	}
+	if updatedCharacterRequest.TempHitPoints == 0 {
+		updatedCharacterRequest.TempHitPoints = existingCharacter.TempHitPoints
+	}
 
 	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
@@ -116,18 +131,23 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	}
 
 	existingCharacter = &models.Character{
-		ID:                existingCharacter.ID,
-		Name:              updatedCharacterRequest.Name,
-		Level:             updatedCharacterRequest.Level,
-		ProfilePictureURL: updatedCharacterRequest.ProfilePictureURL,
-		ClassID:           updatedCharacterRequest.ClassID,
-		RaceID:            updatedCharacterRequest.RaceID,
-		Strength:          updatedCharacterRequest.Strength,
-		Dexterity:         updatedCharacterRequest.Dexterity,
-		Constitution:      updatedCharacterRequest.Constitution,
-		Intelligence:      updatedCharacterRequest.Intelligence,
-		Wisdom:            updatedCharacterRequest.Wisdom,
-		Charisma:          updatedCharacterRequest.Charisma,
+		ID:                   existingCharacter.ID,
+		Name:                 updatedCharacterRequest.Name,
+		Level:                updatedCharacterRequest.Level,
+		ProfilePictureURL:    updatedCharacterRequest.ProfilePictureURL,
+		ClassID:              updatedCharacterRequest.ClassID,
+		RaceID:               updatedCharacterRequest.RaceID,
+		Strength:             updatedCharacterRequest.Strength,
+		Dexterity:            updatedCharacterRequest.Dexterity,
+		Constitution:         updatedCharacterRequest.Constitution,
+		Intelligence:         updatedCharacterRequest.Intelligence,
+		Wisdom:               updatedCharacterRequest.Wisdom,
+		Charisma:             updatedCharacterRequest.Charisma,
+		WalkingSpeedModifier: updatedCharacterRequest.WalkingSpeedModifier,
+		Inspiration:          updatedCharacterRequest.Inspiration,
+		CurrentHitPoints:     updatedCharacterRequest.CurrentHitPoints,
+		MaxHitPoints:         updatedCharacterRequest.MaxHitPoints,
+		TempHitPoints:        updatedCharacterRequest.TempHitPoints,
 	}
 
 	// Update the existing character in the stores with the updated information
@@ -185,6 +205,19 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 		return nil, errors.New("invalid character raceID")
 	}
 
+	if request.MaxHitPoints <= 0 {
+		return nil, errors.New("invalid character maxHitPoints")
+	}
+	if request.CurrentHitPoints <= 0 && request.CurrentHitPoints <= request.MaxHitPoints {
+		return nil, errors.New("invalid character currentHitPoints")
+	}
+	if request.TempHitPoints < 0 {
+		return nil, errors.New("invalid character tempHitPoints")
+	}
+	if request.WalkingSpeedModifier < 0 {
+		return nil, errors.New("invalid character walkingSpeedModifier")
+	}
+
 	character.Name = request.Name
 	character.Level = request.Level
 	character.ClassID = request.ClassID
@@ -196,6 +229,11 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	character.Intelligence = request.Intelligence
 	character.Wisdom = request.Wisdom
 	character.Charisma = request.Charisma
+	character.WalkingSpeedModifier = request.WalkingSpeedModifier
+	character.Inspiration = request.Inspiration
+	character.CurrentHitPoints = request.CurrentHitPoints
+	character.MaxHitPoints = request.MaxHitPoints
+	character.TempHitPoints = request.TempHitPoints
 
 	return character, nil
 }
