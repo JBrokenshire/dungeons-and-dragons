@@ -110,6 +110,24 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.Charisma == 0 {
 		updatedCharacterRequest.Charisma = existingCharacter.Charisma
 	}
+	if existingCharacter.ProficientStrength {
+		updatedCharacterRequest.ProficientStrength = existingCharacter.ProficientStrength
+	}
+	if existingCharacter.ProficientDexterity {
+		updatedCharacterRequest.ProficientDexterity = existingCharacter.ProficientDexterity
+	}
+	if existingCharacter.ProficientConstitution {
+		updatedCharacterRequest.ProficientConstitution = existingCharacter.ProficientConstitution
+	}
+	if existingCharacter.ProficientIntelligence {
+		updatedCharacterRequest.ProficientIntelligence = existingCharacter.ProficientIntelligence
+	}
+	if existingCharacter.ProficientWisdom {
+		updatedCharacterRequest.ProficientWisdom = existingCharacter.ProficientWisdom
+	}
+	if existingCharacter.ProficientCharisma {
+		updatedCharacterRequest.ProficientCharisma = existingCharacter.ProficientCharisma
+	}
 	if updatedCharacterRequest.WalkingSpeedModifier == 0 {
 		updatedCharacterRequest.WalkingSpeedModifier = existingCharacter.WalkingSpeedModifier
 	}
@@ -132,23 +150,29 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	}
 
 	existingCharacter = &models.Character{
-		ID:                   existingCharacter.ID,
-		Name:                 updatedCharacterRequest.Name,
-		Level:                updatedCharacterRequest.Level,
-		ProfilePictureURL:    updatedCharacterRequest.ProfilePictureURL,
-		ClassID:              updatedCharacterRequest.ClassID,
-		RaceID:               updatedCharacterRequest.RaceID,
-		Strength:             updatedCharacterRequest.Strength,
-		Dexterity:            updatedCharacterRequest.Dexterity,
-		Constitution:         updatedCharacterRequest.Constitution,
-		Intelligence:         updatedCharacterRequest.Intelligence,
-		Wisdom:               updatedCharacterRequest.Wisdom,
-		Charisma:             updatedCharacterRequest.Charisma,
-		WalkingSpeedModifier: updatedCharacterRequest.WalkingSpeedModifier,
-		Inspiration:          updatedCharacterRequest.Inspiration,
-		CurrentHitPoints:     updatedCharacterRequest.CurrentHitPoints,
-		MaxHitPoints:         updatedCharacterRequest.MaxHitPoints,
-		TempHitPoints:        updatedCharacterRequest.TempHitPoints,
+		ID:                     existingCharacter.ID,
+		Name:                   updatedCharacterRequest.Name,
+		Level:                  updatedCharacterRequest.Level,
+		ProfilePictureURL:      updatedCharacterRequest.ProfilePictureURL,
+		ClassID:                updatedCharacterRequest.ClassID,
+		RaceID:                 updatedCharacterRequest.RaceID,
+		Strength:               updatedCharacterRequest.Strength,
+		Dexterity:              updatedCharacterRequest.Dexterity,
+		Constitution:           updatedCharacterRequest.Constitution,
+		Intelligence:           updatedCharacterRequest.Intelligence,
+		Wisdom:                 updatedCharacterRequest.Wisdom,
+		Charisma:               updatedCharacterRequest.Charisma,
+		ProficientStrength:     updatedCharacterRequest.ProficientStrength,
+		ProficientDexterity:    updatedCharacterRequest.ProficientDexterity,
+		ProficientConstitution: updatedCharacterRequest.ProficientConstitution,
+		ProficientIntelligence: updatedCharacterRequest.ProficientIntelligence,
+		ProficientWisdom:       updatedCharacterRequest.ProficientWisdom,
+		ProficientCharisma:     updatedCharacterRequest.ProficientCharisma,
+		WalkingSpeedModifier:   updatedCharacterRequest.WalkingSpeedModifier,
+		Inspiration:            updatedCharacterRequest.Inspiration,
+		CurrentHitPoints:       updatedCharacterRequest.CurrentHitPoints,
+		MaxHitPoints:           updatedCharacterRequest.MaxHitPoints,
+		TempHitPoints:          updatedCharacterRequest.TempHitPoints,
 	}
 
 	// Update the existing character in the stores with the updated information

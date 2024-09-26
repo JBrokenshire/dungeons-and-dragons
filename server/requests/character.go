@@ -7,12 +7,18 @@ type CharacterRequest struct {
 	ClassID           int    `json:"class_id"`
 	RaceID            int    `json:"race_id"`
 
-	Strength     int `json:"strength"`
-	Dexterity    int `json:"dexterity"`
-	Constitution int `json:"constitution"`
-	Intelligence int `json:"intelligence"`
-	Wisdom       int `json:"wisdom"`
-	Charisma     int `json:"charisma"`
+	Strength               int  `json:"strength"`
+	Dexterity              int  `json:"dexterity"`
+	Constitution           int  `json:"constitution"`
+	Intelligence           int  `json:"intelligence"`
+	Wisdom                 int  `json:"wisdom"`
+	Charisma               int  `json:"charisma"`
+	ProficientStrength     bool `json:"proficient_strength"`
+	ProficientDexterity    bool `json:"proficient_dexterity"`
+	ProficientConstitution bool `json:"proficient_constitution"`
+	ProficientIntelligence bool `json:"proficient_intelligence"`
+	ProficientWisdom       bool `json:"proficient_wisdom"`
+	ProficientCharisma     bool `json:"proficient_charisma"`
 
 	WalkingSpeedModifier int  `json:"walking_speed_modifier"`
 	Inspiration          bool `json:"inspiration"`

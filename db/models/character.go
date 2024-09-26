@@ -13,12 +13,18 @@ type Character struct {
 	ClassID           int    `json:"class_id"`
 	RaceID            int    `json:"race_id"`
 
-	Strength     int `gorm:"not null" json:"strength"`
-	Dexterity    int `gorm:"not null" json:"dexterity"`
-	Constitution int `gorm:"not null" json:"constitution"`
-	Intelligence int `gorm:"not null" json:"intelligence"`
-	Wisdom       int `gorm:"not null" json:"wisdom"`
-	Charisma     int `gorm:"not null" json:"charisma"`
+	Strength               int  `gorm:"not null" json:"strength"`
+	Dexterity              int  `gorm:"not null" json:"dexterity"`
+	Constitution           int  `gorm:"not null" json:"constitution"`
+	Intelligence           int  `gorm:"not null" json:"intelligence"`
+	Wisdom                 int  `gorm:"not null" json:"wisdom"`
+	Charisma               int  `gorm:"not null" json:"charisma"`
+	ProficientStrength     bool `gorm:"not null" json:"proficient_strength"`
+	ProficientDexterity    bool `gorm:"not null" json:"proficient_dexterity"`
+	ProficientConstitution bool `gorm:"not null" json:"proficient_constitution"`
+	ProficientIntelligence bool `gorm:"not null" json:"proficient_intelligence"`
+	ProficientWisdom       bool `gorm:"not null" json:"proficient_wisdom"`
+	ProficientCharisma     bool `gorm:"not null" json:"proficient_charisma"`
 
 	WalkingSpeedModifier int  `gorm:"not null" json:"walking_speed_modifier"`
 	Inspiration          bool `gorm:"not null" json:"inspiration"`
