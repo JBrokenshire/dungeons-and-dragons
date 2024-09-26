@@ -23,5 +23,7 @@ func charactersRoutes(server *server.Server) {
 	characters.PUT("/:id", characterController.Update)
 	characters.DELETE("/:id", characterController.Delete)
 	characters.GET("/:id/inspiration", characterController.ToggleInspiration)
-	server.Echo.GET("/characters/:id/level-up", characterController.LevelUp)
+	characters.GET("/:id/level-up", characterController.LevelUp)
+	characters.GET("/:id/heal/:value", characterController.Heal)
+	characters.GET("/:id/damage/:value", characterController.Damage)
 }

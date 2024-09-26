@@ -415,6 +415,89 @@ func TestLevelUpCharacter(t *testing.T) {
 	}
 }
 
+func TestUpdateCharacterHealth(t *testing.T) {
+	ts.ClearTable("characters")
+
+	ts.SetupDefaultClasses()
+	ts.SetupDefaultRaces()
+
+	healCharacter := &models.Character{
+		CurrentHitPoints: 10,
+		MaxHitPoints:     20,
+	}
+	factories.NewCharacter(ts.S.Db, healCharacter)
+	damageCharacter := &models.Character{
+		CurrentHitPoints: 10,
+		MaxHitPoints:     20,
+	}
+	factories.NewCharacter(ts.S.Db, damageCharacter)
+
+	cases := []helpers.TestCase{
+		{
+			TestName: "Can heal character 1 hit point",
+			Request: helpers.Request{
+				Method: http.MethodGet,
+				URL:    fmt.Sprintf("/characters/%v/heal/1", healCharacter.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, healCharacter.Name),
+					fmt.Sprintf(`"current_hit_points":%v`, 11),
+				},
+			},
+		},
+		{
+			TestName: "Character can't heal more than max hit points",
+			Request: helpers.Request{
+				Method: http.MethodGet,
+				URL:    fmt.Sprintf("/characters/%v/heal/1000", healCharacter.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, healCharacter.Name),
+					fmt.Sprintf(`"current_hit_points":%v`, healCharacter.MaxHitPoints),
+				},
+			},
+		},
+		{
+			TestName: "Can damage character 1 hit point",
+			Request: helpers.Request{
+				Method: http.MethodGet,
+				URL:    fmt.Sprintf("/characters/%v/damage/1", damageCharacter.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, damageCharacter.Name),
+					fmt.Sprintf(`"current_hit_points":%v`, 9),
+				},
+			},
+		},
+		{
+			TestName: "Character can't go below 0 hit points",
+			Request: helpers.Request{
+				Method: http.MethodGet,
+				URL:    fmt.Sprintf("/characters/%v/damage/1000", damageCharacter.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, damageCharacter.Name),
+					fmt.Sprintf(`"current_hit_points":%v`, 0),
+				},
+			},
+		},
+	}
+
+	for _, test := range cases {
+		t.Run(test.TestName, func(t *testing.T) {
+			RunTestCase(t, test)
+		})
+	}
+}
+
 func TestDeleteCharacter(t *testing.T) {
 	ts.SetupDefaultCharacters()
 

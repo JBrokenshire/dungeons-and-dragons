@@ -8,6 +8,7 @@ import (
 	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type CharacterController struct {
@@ -182,6 +183,60 @@ func (c *CharacterController) ToggleInspiration(ctx echo.Context) error {
 	}
 
 	character.Inspiration = !character.Inspiration
+
+	err = c.CharacterStore.Update(character)
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, character)
+}
+
+func (c *CharacterController) Heal(ctx echo.Context) error {
+	character, err := c.CharacterStore.Get(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	value, err := strconv.Atoi(ctx.Param("value"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
+	}
+	if value < 0 {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
+	}
+
+	character.CurrentHitPoints += value
+	if character.CurrentHitPoints > character.MaxHitPoints {
+		character.CurrentHitPoints = character.MaxHitPoints
+	}
+
+	err = c.CharacterStore.Update(character)
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, character)
+}
+
+func (c *CharacterController) Damage(ctx echo.Context) error {
+	character, err := c.CharacterStore.Get(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	value, err := strconv.Atoi(ctx.Param("value"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
+	}
+	if value < 0 {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, err)
+	}
+
+	character.CurrentHitPoints -= value
+	if character.CurrentHitPoints < 0 {
+		character.CurrentHitPoints = 0
+	}
 
 	err = c.CharacterStore.Update(character)
 	if err != nil {
