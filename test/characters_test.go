@@ -1,6 +1,8 @@
 package test
 
 import (
+	"dnd-api/db/factories"
+	"dnd-api/db/models"
 	"dnd-api/server/requests"
 	"dnd-api/test/helpers"
 	"fmt"
@@ -9,14 +11,12 @@ import (
 )
 
 func TestGetAllCharacters(t *testing.T) {
+	ts.SetupDefaultCharacters()
+
 	cases := []helpers.TestCase{
 		{
 			TestName: "can get list of characters (populated table)",
-			Setup: func() {
-				ts.ClearTable("characters")
-				ts.SetupDefaultCharacters()
-			},
-			Request: helpers.Request{Method: http.MethodGet, URL: "/characters"},
+			Request:  helpers.Request{Method: http.MethodGet, URL: "/characters"},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
@@ -141,6 +141,8 @@ func TestCreateCharacter(t *testing.T) {
 }
 
 func TestGetCharacter(t *testing.T) {
+	ts.SetupDefaultCharacters()
+
 	cases := []helpers.TestCase{
 		{
 			TestName: "can get character by id",
@@ -175,6 +177,8 @@ func TestGetCharacter(t *testing.T) {
 }
 
 func TestUpdateCharacter(t *testing.T) {
+	ts.SetupDefaultCharacters()
+
 	request := helpers.Request{
 		Method: http.MethodPut,
 		URL:    "/characters/1",
@@ -311,7 +315,73 @@ func TestUpdateCharacter(t *testing.T) {
 	}
 }
 
+func TestCharacterToggleInspiration(t *testing.T) {
+	ts.ClearTable("characters")
+
+	ts.SetupDefaultClasses()
+	ts.SetupDefaultRaces()
+
+	withInspiration := &models.Character{
+		Inspiration: true,
+	}
+	factories.NewCharacter(ts.S.Db, withInspiration)
+
+	withoutInspiration := &models.Character{
+		Inspiration: false,
+	}
+	factories.NewCharacter(ts.S.Db, withoutInspiration)
+
+	cases := []helpers.TestCase{
+		{
+			TestName: "can change character inspiration from true to false",
+			Request: helpers.Request{
+				Method: "GET",
+				URL:    fmt.Sprintf("/characters/%v/inspiration", withInspiration.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, withInspiration.Name),
+					fmt.Sprintf(`"inspiration":%v`, false),
+				},
+			},
+		},
+		{
+			TestName: "can change character inspiration from true to false",
+			Request: helpers.Request{
+				Method: "GET",
+				URL:    fmt.Sprintf("/characters/%v/inspiration", withoutInspiration.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"name":"%v"`, withoutInspiration.Name),
+					fmt.Sprintf(`"inspiration":%v`, true),
+				},
+			},
+		},
+		{
+			TestName: "404 not found on invalid character id",
+			Request: helpers.Request{
+				Method: "GET",
+				URL:    fmt.Sprintf("/characters/invalid-id/inspiration"),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusNotFound,
+			},
+		},
+	}
+
+	for _, test := range cases {
+		t.Run(test.TestName, func(t *testing.T) {
+			RunTestCase(t, test)
+		})
+	}
+}
+
 func TestLevelUpCharacter(t *testing.T) {
+	ts.SetupDefaultCharacters()
+
 	cases := []helpers.TestCase{
 		{
 			TestName: "can level up character by id",
@@ -346,6 +416,8 @@ func TestLevelUpCharacter(t *testing.T) {
 }
 
 func TestDeleteCharacter(t *testing.T) {
+	ts.SetupDefaultCharacters()
+
 	cases := []helpers.TestCase{
 		{
 			TestName: "can delete character by id",
