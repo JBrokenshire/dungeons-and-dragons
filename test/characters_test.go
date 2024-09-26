@@ -387,7 +387,7 @@ func TestLevelUpCharacter(t *testing.T) {
 			TestName: "can level up character by id",
 			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
-				Method: http.MethodPut,
+				Method: http.MethodGet,
 				URL:    "/characters/1/level-up",
 			},
 			Expected: helpers.ExpectedResponse{
@@ -399,7 +399,7 @@ func TestLevelUpCharacter(t *testing.T) {
 			TestName: "put /characters/:id/level-up returns 404 not found on character id not in database",
 			Setup:    ts.SetupDefaultCharacters,
 			Request: helpers.Request{
-				Method: http.MethodPut,
+				Method: http.MethodGet,
 				URL:    "/characters/10/level-up",
 			},
 			Expected: helpers.ExpectedResponse{
