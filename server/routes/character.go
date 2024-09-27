@@ -9,11 +9,15 @@ import (
 func charactersRoutes(server *server.Server) {
 	classStore := stores.NewGormClassStore(server.Db)
 	raceStore := stores.NewGormRaceStore(server.Db)
+	characterStore := stores.NewGormCharacterStore(server.Db)
+	skillsStore := stores.NewGormCharacterSkillsStore(server.Db)
+
 	characterController := controllers.CharacterController{
-		CharacterStore: stores.NewGormCharacterStore(server.Db),
+		CharacterStore: characterStore,
 		ClassStore:     classStore,
 		RaceStore:      raceStore,
 	}
+	skillsController := controllers.CharacterSkillsController{CharacterSkillsStore: skillsStore}
 
 	characters := server.Echo.Group("/characters")
 	characters.GET("", characterController.GetAll)
@@ -26,4 +30,6 @@ func charactersRoutes(server *server.Server) {
 	characters.GET("/:id/level-up", characterController.LevelUp)
 	characters.GET("/:id/heal/:value", characterController.Heal)
 	characters.GET("/:id/damage/:value", characterController.Damage)
+
+	characters.GET("/:id/proficient-skills", skillsController.GetProficientByCharacterID)
 }

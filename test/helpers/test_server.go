@@ -128,3 +128,12 @@ func (ts *TestServer) SetupDefaultCharacters() {
 
 	ts.seeder.SetCharacters()
 }
+
+func (ts *TestServer) SetupDefaultCharactersProficientSkills() {
+	ts.ClearTable("characters_proficient_skills")
+	ts.ClearTable("characters")
+
+	ts.SetupDefaultClasses()
+
+	ts.seeder.SetCharacterProficientSkills()
+}
