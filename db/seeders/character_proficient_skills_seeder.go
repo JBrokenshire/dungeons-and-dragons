@@ -88,7 +88,7 @@ func (s *Seeder) SetCharacterProficientSkills() {
 	}
 
 	for _, characterProficientSkill := range charactersProficientSkills {
-		err := s.DB.Where("id = ?", characterProficientSkill.ID).FirstOrCreate(&characterProficientSkill).Error
+		err := s.DB.Where("character_id = ? AND skill_name = ?", characterProficientSkill.CharacterID, characterProficientSkill.SkillName).FirstOrCreate(&characterProficientSkill).Error
 		if err != nil {
 			log.Printf("error creating character proficient skill for CharacterID: %q, Skill: %s: %s", characterProficientSkill.CharacterID, characterProficientSkill.SkillName, err.Error())
 		}
