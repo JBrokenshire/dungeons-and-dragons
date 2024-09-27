@@ -20,7 +20,8 @@ type Request struct {
 }
 
 type ExpectedResponse struct {
-	StatusCode int
-	BodyPart   string
-	BodyParts  []string
+	StatusCode       int
+	BodyPart         string
+	BodyParts        []string
+	BodyPartsMissing []string
 }

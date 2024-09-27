@@ -54,6 +54,12 @@ func ValidateResults(t *testing.T, test helpers.TestCase, res *httptest.Response
 			isIn(t, res.Body.String(), expectedText)
 		}
 	}
+
+	if len(test.Expected.BodyPartsMissing) > 0 {
+		for _, missingText := range test.Expected.BodyPartsMissing {
+			isNotIn(t, res.Body.String(), missingText)
+		}
+	}
 }
 
 func isIn(t *testing.T, s, contains string, msgAndArgs ...interface{}) bool {
@@ -62,6 +68,17 @@ func isIn(t *testing.T, s, contains string, msgAndArgs ...interface{}) bool {
 	ok := strings.Contains(s, contains)
 	if !ok {
 		return assert.Fail(t, fmt.Sprintf("%#v is not in %#v", contains, s), msgAndArgs...)
+	}
+
+	return true
+}
+
+func isNotIn(t *testing.T, s, notContains string, msgAndArgs ...interface{}) bool {
+	t.Helper()
+
+	ok := !strings.Contains(s, notContains)
+	if !ok {
+		return assert.Fail(t, fmt.Sprintf("%#v is not in %#v", notContains, s), msgAndArgs...)
 	}
 
 	return true

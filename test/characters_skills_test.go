@@ -21,6 +21,9 @@ func TestGetCharacterProficientSkills(t *testing.T) {
 	}
 	factories.NewCharacter(ts.S.Db, character)
 
+	noProficiencies := &models.Character{ID: 2}
+	factories.NewCharacter(ts.S.Db, noProficiencies)
+
 	proficientSkill := &models.CharacterProficientSkill{CharacterID: character.ID, SkillName: "Athletics", ProficiencyType: "Half-Proficiency"}
 	factories.NewCharacterProficientSkill(ts.S.Db, proficientSkill)
 
@@ -37,6 +40,9 @@ func TestGetCharacterProficientSkills(t *testing.T) {
 					fmt.Sprintf(`"character_id":%v`, proficientSkill.CharacterID),
 					fmt.Sprintf(`"skill_name":"%s"`, proficientSkill.SkillName),
 					fmt.Sprintf(`"proficiency_type":"%s"`, proficientSkill.ProficiencyType),
+				},
+				BodyPartsMissing: []string{
+					fmt.Sprintf(`"character_id":%v`, noProficiencies.ID),
 				},
 			},
 		},
