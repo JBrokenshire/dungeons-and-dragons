@@ -8,13 +8,11 @@ import (
 func (s *Seeder) SetCharacterSenses() {
 	characterSenses := []models.CharacterSense{
 		{
-			ID:          1,
 			CharacterID: 2,
 			SenseName:   "Darkvision",
 			Distance:    60,
 		},
 		{
-			ID:          2,
 			CharacterID: 4,
 			SenseName:   "Blindsight",
 			Distance:    10,

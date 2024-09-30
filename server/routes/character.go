@@ -1,25 +1,19 @@
 package routes
 
 import (
-	"dnd-api/db/stores"
 	"dnd-api/server"
 	"dnd-api/server/controllers"
 )
 
 func charactersRoutes(server *server.Server) {
-	classStore := stores.NewGormClassStore(server.Db)
-	raceStore := stores.NewGormRaceStore(server.Db)
-	characterStore := stores.NewGormCharacterStore(server.Db)
-	skillsStore := stores.NewGormCharacterSkillsStore(server.Db)
-	sensesStore := stores.NewGormCharacterSensesStore(server.Db)
-
 	characterController := controllers.CharacterController{
-		CharacterStore: characterStore,
-		ClassStore:     classStore,
-		RaceStore:      raceStore,
+		CharacterStore: server.Stores.Character,
+		ClassStore:     server.Stores.Class,
+		RaceStore:      server.Stores.Race,
 	}
-	skillsController := controllers.CharacterSkillsController{CharacterSkillsStore: skillsStore}
-	sensesController := controllers.CharacterSensesController{CharacterSensesStore: sensesStore}
+	skillsController := controllers.CharacterSkillsController{CharacterSkillsStore: server.Stores.CharacterSkills}
+	sensesController := controllers.CharacterSensesController{CharacterSensesStore: server.Stores.CharacterSenses}
+	proficientArmourController := controllers.CharacterArmourTypesController{CharacterArmourTypesStore: server.Stores.CharacterArmourTypes}
 
 	characters := server.Echo.Group("/characters")
 	characters.GET("", characterController.GetAll)
@@ -35,4 +29,5 @@ func charactersRoutes(server *server.Server) {
 
 	characters.GET("/:id/proficient-skills", skillsController.GetProficientByCharacterID)
 	characters.GET("/:id/senses", sensesController.GetSensesByCharacterID)
+	characters.GET("/:id/proficient-armour", proficientArmourController.GetProficientArmourTypes)
 }
