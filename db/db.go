@@ -38,6 +38,7 @@ func Init() *gorm.DB {
 	seeder.SetRaces()
 	seeder.SetCharacters()
 	seeder.SetCharacterProficientSkills()
+	seeder.SetCharacterSenses()
 
 	return db
 }

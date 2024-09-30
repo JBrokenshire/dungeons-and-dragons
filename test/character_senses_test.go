@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestGetCharacterProficientSkills(t *testing.T) {
+func TestGetCharacterSenses(t *testing.T) {
 	ts.ClearTable("character_proficient_skills")
 	ts.ClearTable("characters")
 
@@ -21,36 +21,39 @@ func TestGetCharacterProficientSkills(t *testing.T) {
 	}
 	factories.NewCharacter(ts.S.Db, character)
 
-	noProficiencies := &models.Character{ID: 2}
-	factories.NewCharacter(ts.S.Db, noProficiencies)
+	noSenses := &models.Character{
+		ID: 2,
+	}
+	factories.NewCharacter(ts.S.Db, noSenses)
 
-	proficientSkill := &models.CharacterProficientSkill{CharacterID: character.ID, SkillName: "Athletics", ProficiencyType: "Half-Proficiency"}
-	factories.NewCharacterProficientSkill(ts.S.Db, proficientSkill)
+	sense := &models.CharacterSense{
+		CharacterID: character.ID,
+		SenseName:   "Darkvision",
+		Distance:    60,
+	}
+	factories.NewCharacterSense(ts.S.Db, sense)
 
 	cases := []helpers.TestCase{
 		{
-			TestName: "Can get all proficient skills for character",
+			TestName: "Can get all senses for character",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/1/proficient-skills",
+				URL:    "/characters/1/senses",
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
-					fmt.Sprintf(`"character_id":%v`, proficientSkill.CharacterID),
-					fmt.Sprintf(`"skill_name":"%s"`, proficientSkill.SkillName),
-					fmt.Sprintf(`"proficiency_type":"%s"`, proficientSkill.ProficiencyType),
-				},
-				BodyPartsMissing: []string{
-					fmt.Sprintf(`"character_id":%v`, noProficiencies.ID),
+					fmt.Sprintf(`"character_id":%v`, character.ID),
+					fmt.Sprintf(`"sense_name":"%s"`, sense.SenseName),
+					fmt.Sprintf(`"distance":%v`, sense.Distance),
 				},
 			},
 		},
 		{
-			TestName: "Empty response for character with no proficient skills",
+			TestName: "Empty response for character with no senses",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/2/proficient-skills",
+				URL:    "/characters/2/senses",
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
@@ -58,10 +61,10 @@ func TestGetCharacterProficientSkills(t *testing.T) {
 			},
 		},
 		{
-			TestName: "empty response on invalid character id",
+			TestName: "Empty response on invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/invalid-id/proficient-skills",
+				URL:    "/characters/invalid-id/senses",
 			},
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,

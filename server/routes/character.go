@@ -11,6 +11,7 @@ func charactersRoutes(server *server.Server) {
 	raceStore := stores.NewGormRaceStore(server.Db)
 	characterStore := stores.NewGormCharacterStore(server.Db)
 	skillsStore := stores.NewGormCharacterSkillsStore(server.Db)
+	sensesStore := stores.NewGormCharacterSensesStore(server.Db)
 
 	characterController := controllers.CharacterController{
 		CharacterStore: characterStore,
@@ -18,6 +19,7 @@ func charactersRoutes(server *server.Server) {
 		RaceStore:      raceStore,
 	}
 	skillsController := controllers.CharacterSkillsController{CharacterSkillsStore: skillsStore}
+	sensesController := controllers.CharacterSensesController{CharacterSensesStore: sensesStore}
 
 	characters := server.Echo.Group("/characters")
 	characters.GET("", characterController.GetAll)
@@ -32,4 +34,5 @@ func charactersRoutes(server *server.Server) {
 	characters.GET("/:id/damage/:value", characterController.Damage)
 
 	characters.GET("/:id/proficient-skills", skillsController.GetProficientByCharacterID)
+	characters.GET("/:id/senses", sensesController.GetSensesByCharacterID)
 }

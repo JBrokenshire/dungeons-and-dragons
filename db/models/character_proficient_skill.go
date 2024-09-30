@@ -1,6 +1,7 @@
 package models
 
 import (
+	"dnd-api/utils"
 	"fmt"
 	"github.com/jinzhu/gorm"
 )
@@ -39,27 +40,18 @@ type CharacterProficientSkill struct {
 	ProficiencyType string `gorm:"not null default:'Proficiency'" json:"proficiency_type"`
 }
 
-func (c *CharacterProficientSkill) BeforeCreate(tx *gorm.DB) error {
+func (c *CharacterProficientSkill) BeforeCreate(_ *gorm.DB) error {
 	if c.ProficiencyType == "" {
 		c.ProficiencyType = validProficiencyTypes[0]
 	}
 
-	if !sliceContains(validProficiencyTypes, c.ProficiencyType) {
+	if !utils.SliceContains(validProficiencyTypes, c.ProficiencyType) {
 		return fmt.Errorf("proficiency type '%s' is not valid", c.ProficiencyType)
 	}
 
-	if !sliceContains(validSkillNames, c.SkillName) {
+	if !utils.SliceContains(validSkillNames, c.SkillName) {
 		return fmt.Errorf("skill name '%s' is not valid", c.SkillName)
 	}
 
 	return nil
-}
-
-func sliceContains[T comparable](slice []T, target T) bool {
-	for _, item := range slice {
-		if item == target {
-			return true
-		}
-	}
-	return false
 }
