@@ -3,6 +3,7 @@ package controllers
 import (
 	"dnd-api/db/stores"
 	res "dnd-api/server/responses"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -37,4 +38,34 @@ func (c *CharacterProficienciesController) GetCharacterProficientWeapons(ctx ech
 	}
 
 	return ctx.JSON(http.StatusOK, weapons)
+}
+
+func (c *CharacterProficienciesController) GetCharacterProficientTools(ctx echo.Context) error {
+	characterProficientTools, err := c.CharacterProficienciesStore.GetProficientToolsByCharacterID(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	var tools []string
+	for _, proficientTool := range characterProficientTools {
+		tools = append(tools, proficientTool.Tool)
+	}
+
+	return ctx.JSON(http.StatusOK, tools)
+}
+
+func (c *CharacterProficienciesController) GetCharacterLanguages(ctx echo.Context) error {
+	characterLanguages, err := c.CharacterProficienciesStore.GetLanguagesByCharacterID(ctx.Param("id"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	var languages = []string{"Common"}
+	for _, language := range characterLanguages {
+		languages = append(languages, language.Language)
+	}
+
+	fmt.Println(">>> ", languages)
+
+	return ctx.JSON(http.StatusOK, languages)
 }

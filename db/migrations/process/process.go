@@ -20,5 +20,7 @@ func getMigrationsList() []gmStore.Migratable {
 		&list.CreateCharacterSensesTable{},
 		&list.CreateCharacterProficientArmourTypes{},
 		&list.CreateCharacterProficientWeapons{},
+		&list.CreateCharacterProficientTools{},
+		&list.CreateCharacterLanguages{},
 	}
 }

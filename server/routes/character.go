@@ -32,4 +32,6 @@ func charactersRoutes(server *server.Server) {
 
 	characters.GET("/:id/proficient/armour", proficienciesController.GetCharacterProficientArmourTypes)
 	characters.GET("/:id/proficient/weapons", proficienciesController.GetCharacterProficientWeapons)
+	characters.GET("/:id/proficient/tools", proficienciesController.GetCharacterProficientTools)
+	characters.GET("/:id/proficient/languages", proficienciesController.GetCharacterLanguages)
 }

@@ -11,6 +11,8 @@ import (
 type CharacterProficienciesStore interface {
 	GetProficientArmourTypesByCharacterID(id interface{}) ([]*models.CharacterProficientArmourType, error)
 	GetProficientWeaponsByCharacterID(id interface{}) ([]*models.CharacterProficientWeapon, error)
+	GetProficientToolsByCharacterID(id interface{}) ([]*models.CharacterProficientTool, error)
+	GetLanguagesByCharacterID(id interface{}) ([]*models.CharacterLanguage, error)
 }
 
 type GormCharacterProficienciesStore struct {
@@ -53,4 +55,36 @@ func (g *GormCharacterProficienciesStore) GetProficientWeaponsByCharacterID(id i
 	}
 
 	return weapons, nil
+}
+
+func (g *GormCharacterProficienciesStore) GetProficientToolsByCharacterID(id interface{}) ([]*models.CharacterProficientTool, error) {
+	if reflect.TypeOf(id).Kind() != reflect.String && reflect.TypeOf(id).Kind() != reflect.Int {
+		return nil, errors.New("id should be a string or int")
+	}
+
+	var tools []*models.CharacterProficientTool
+	err := g.DB.
+		Where("character_id = ?", id).
+		Find(&tools).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("proficient tools with character id: %d could not be found", id))
+	}
+
+	return tools, nil
+}
+
+func (g *GormCharacterProficienciesStore) GetLanguagesByCharacterID(id interface{}) ([]*models.CharacterLanguage, error) {
+	if reflect.TypeOf(id).Kind() != reflect.String && reflect.TypeOf(id).Kind() != reflect.Int {
+		return nil, errors.New("id should be a string or int")
+	}
+
+	var languages []*models.CharacterLanguage
+	err := g.DB.
+		Where("character_id = ?", id).
+		Find(&languages).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("languages with character id: %d could not be found", id))
+	}
+
+	return languages, nil
 }
