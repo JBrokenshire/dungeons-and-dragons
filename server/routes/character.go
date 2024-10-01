@@ -13,7 +13,7 @@ func charactersRoutes(server *server.Server) {
 	}
 	skillsController := controllers.CharacterSkillsController{CharacterSkillsStore: server.Stores.CharacterSkills}
 	sensesController := controllers.CharacterSensesController{CharacterSensesStore: server.Stores.CharacterSenses}
-	proficientArmourController := controllers.CharacterArmourTypesController{CharacterArmourTypesStore: server.Stores.CharacterArmourTypes}
+	proficienciesController := controllers.CharacterProficienciesController{CharacterProficienciesStore: server.Stores.CharacterProficiencies}
 
 	characters := server.Echo.Group("/characters")
 	characters.GET("", characterController.GetAll)
@@ -29,5 +29,7 @@ func charactersRoutes(server *server.Server) {
 
 	characters.GET("/:id/proficient-skills", skillsController.GetProficientByCharacterID)
 	characters.GET("/:id/senses", sensesController.GetSensesByCharacterID)
-	characters.GET("/:id/proficient-armour", proficientArmourController.GetProficientArmourTypes)
+
+	characters.GET("/:id/proficient/armour", proficienciesController.GetCharacterProficientArmourTypes)
+	characters.GET("/:id/proficient/weapons", proficienciesController.GetCharacterProficientWeapons)
 }

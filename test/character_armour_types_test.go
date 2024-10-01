@@ -4,7 +4,6 @@ import (
 	"dnd-api/db/factories"
 	"dnd-api/db/models"
 	"dnd-api/test/helpers"
-	"fmt"
 	"net/http"
 	"testing"
 )
@@ -21,8 +20,14 @@ func TestGetCharacterProficientArmourTypes(t *testing.T) {
 	noArmourProficiencies := &models.Character{ID: 2}
 	factories.NewCharacter(ts.S.Db, noArmourProficiencies)
 
+	otherArmourProficiencies := &models.Character{ID: 3}
+	factories.NewCharacter(ts.S.Db, otherArmourProficiencies)
+
 	proficientArmourType := &models.CharacterProficientArmourType{CharacterID: character.ID, ArmourType: "Light Armour"}
 	factories.NewCharacterProficientArmourType(ts.S.Db, proficientArmourType)
+
+	otherProficientArmourType := &models.CharacterProficientArmourType{CharacterID: otherArmourProficiencies.ID, ArmourType: "Heavy Armour"}
+	factories.NewCharacterProficientArmourType(ts.S.Db, otherProficientArmourType)
 
 	cases := []helpers.TestCase{
 		{
@@ -34,10 +39,10 @@ func TestGetCharacterProficientArmourTypes(t *testing.T) {
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
-					`"armour_type":"Light Armour"`,
+					`"Light Armour"`,
 				},
 				BodyPartsMissing: []string{
-					fmt.Sprintf(`"character_id":%v`, noArmourProficiencies.ID),
+					`"Heavy Armour"`,
 				},
 			},
 		},

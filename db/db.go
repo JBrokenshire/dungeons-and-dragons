@@ -40,6 +40,7 @@ func Init() *gorm.DB {
 	seeder.SetCharacterProficientSkills()
 	seeder.SetCharacterSenses()
 	seeder.SetCharacterProficientArmourTypes()
+	seeder.SetCharactersProficientWeapons()
 
 	return db
 }
