@@ -12,10 +12,10 @@ type CharacterArmourTypesController struct {
 }
 
 func (c *CharacterArmourTypesController) GetProficientArmourTypes(ctx echo.Context) error {
-	characterProficientArmourType, err := c.CharacterArmourTypesStore.GetProficientArmourTypesByCharacterID(ctx.Param("id"))
+	characterProficientArmourTypes, err := c.CharacterArmourTypesStore.GetProficientArmourTypesByCharacterID(ctx.Param("id"))
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
 
-	return ctx.JSON(http.StatusOK, characterProficientArmourType)
+	return ctx.JSON(http.StatusOK, characterProficientArmourTypes)
 }

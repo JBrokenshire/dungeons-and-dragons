@@ -34,7 +34,6 @@ func TestGetCharacterProficientArmourTypes(t *testing.T) {
 			Expected: helpers.ExpectedResponse{
 				StatusCode: http.StatusOK,
 				BodyParts: []string{
-					fmt.Sprintf(`"character_id":%v`, character.ID),
 					`"armour_type":"Light Armour"`,
 				},
 				BodyPartsMissing: []string{

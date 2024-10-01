@@ -28,7 +28,9 @@ func (g *GormCharacterArmourTypesStore) GetProficientArmourTypesByCharacterID(id
 	}
 
 	var armourTypes []*models.CharacterProficientArmourType
-	err := g.DB.Where("character_id = ?", id).Find(&armourTypes).Error
+	err := g.DB.
+		Where("character_id = ?", id).
+		Find(&armourTypes).Error
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("proficient armour types with character id: %q could not be found", id))
 	}
