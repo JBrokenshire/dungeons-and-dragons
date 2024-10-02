@@ -20,10 +20,6 @@ type CharacterProficientArmourType struct {
 }
 
 func (c *CharacterProficientArmourType) BeforeCreate(_ *gorm.DB) error {
-	if c.ArmourType == "" {
-		c.ArmourType = validArmourTypes[0]
-	}
-
 	if !utils.SliceContains(validArmourTypes, c.ArmourType) {
 		return fmt.Errorf("armour type '%s' is not valid", c.ArmourType)
 	}

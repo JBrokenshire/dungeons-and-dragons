@@ -41,10 +41,6 @@ type CharacterProficientSkill struct {
 }
 
 func (c *CharacterProficientSkill) BeforeCreate(_ *gorm.DB) error {
-	if c.ProficiencyType == "" {
-		c.ProficiencyType = validProficiencyTypes[0]
-	}
-
 	if !utils.SliceContains(validProficiencyTypes, c.ProficiencyType) {
 		return fmt.Errorf("proficiency type '%s' is not valid", c.ProficiencyType)
 	}

@@ -3,7 +3,6 @@ package controllers
 import (
 	"dnd-api/db/stores"
 	res "dnd-api/server/responses"
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -64,8 +63,6 @@ func (c *CharacterProficienciesController) GetCharacterLanguages(ctx echo.Contex
 	for _, language := range characterLanguages {
 		languages = append(languages, language.Language)
 	}
-
-	fmt.Println(">>> ", languages)
 
 	return ctx.JSON(http.StatusOK, languages)
 }

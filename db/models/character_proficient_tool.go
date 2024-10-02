@@ -24,10 +24,6 @@ type CharacterProficientTool struct {
 }
 
 func (c *CharacterProficientTool) BeforeCreate(_ *gorm.DB) error {
-	if c.Tool == "" {
-		c.Tool = validTools[0]
-	}
-
 	if !utils.SliceContains(validTools, c.Tool) {
 		return fmt.Errorf("tool '%s' is not valid", c.Tool)
 	}

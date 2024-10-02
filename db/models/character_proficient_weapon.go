@@ -18,10 +18,6 @@ type CharacterProficientWeapon struct {
 }
 
 func (c *CharacterProficientWeapon) BeforeCreate(_ *gorm.DB) error {
-	if c.Weapon == "" {
-		c.Weapon = validWeapons[0]
-	}
-
 	if !utils.SliceContains(validWeapons, c.Weapon) {
 		return fmt.Errorf("weapon '%s' is not valid", c.Weapon)
 	}

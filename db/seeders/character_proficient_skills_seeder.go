@@ -8,82 +8,99 @@ import (
 func (s *Seeder) SetCharacterProficientSkills() {
 	charactersProficientSkills := []models.CharacterProficientSkill{
 		{
-			CharacterID: 1,
-			SkillName:   "Arcana",
+			CharacterID:     1,
+			SkillName:       "Arcana",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 1,
-			SkillName:   "Athletics",
+			CharacterID:     1,
+			SkillName:       "Athletics",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 1,
-			SkillName:   "History",
+			CharacterID:     1,
+			SkillName:       "History",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 1,
-			SkillName:   "Insight",
+			CharacterID:     1,
+			SkillName:       "Insight",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 1,
-			SkillName:   "Survival",
+			CharacterID:     1,
+			SkillName:       "Survival",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 2,
-			SkillName:   "Athletics",
+			CharacterID:     2,
+			SkillName:       "Athletics",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 2,
-			SkillName:   "Intimidation",
-		},
-
-		{
-			CharacterID: 2,
-			SkillName:   "Perception",
-		},
-
-		{
-			CharacterID: 2,
-			SkillName:   "Survival",
+			CharacterID:     2,
+			SkillName:       "Intimidation",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Athletics",
+			CharacterID:     2,
+			SkillName:       "Perception",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Insight",
+			CharacterID:     2,
+			SkillName:       "Survival",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Intimidation",
+			CharacterID:     3,
+			SkillName:       "Athletics",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Investigation",
+			CharacterID:     3,
+			SkillName:       "Insight",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Perception",
+			CharacterID:     3,
+			SkillName:       "Intimidation",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 3,
-			SkillName:   "Survival",
+			CharacterID:     3,
+			SkillName:       "Investigation",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 4,
-			SkillName:   "Insight",
+			CharacterID:     3,
+			SkillName:       "Perception",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 4,
-			SkillName:   "Intimidation",
+			CharacterID:     3,
+			SkillName:       "Survival",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 4,
-			SkillName:   "Perception",
+			CharacterID:     4,
+			SkillName:       "Insight",
+			ProficiencyType: "Proficiency",
 		},
 		{
-			CharacterID: 4,
-			SkillName:   "Stealth",
+			CharacterID:     4,
+			SkillName:       "Intimidation",
+			ProficiencyType: "Proficiency",
+		},
+		{
+			CharacterID:     4,
+			SkillName:       "Perception",
+			ProficiencyType: "Proficiency",
+		},
+		{
+			CharacterID:     4,
+			SkillName:       "Stealth",
+			ProficiencyType: "Proficiency",
 		},
 	}
 

@@ -20,10 +20,6 @@ type CharacterSense struct {
 }
 
 func (c *CharacterSense) BeforeCreate(_ *gorm.DB) error {
-	if c.SenseName == "" {
-		return fmt.Errorf("sense name is required")
-	}
-
 	if !utils.SliceContains(validSenses, c.SenseName) {
 		return fmt.Errorf("proficiency type '%s' is not valid", c.SenseName)
 	}

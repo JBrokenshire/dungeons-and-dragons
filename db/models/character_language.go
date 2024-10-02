@@ -31,10 +31,6 @@ type CharacterLanguage struct {
 }
 
 func (c *CharacterLanguage) BeforeCreate(_ *gorm.DB) error {
-	if c.Language == "" {
-		c.Language = validLanguages[0]
-	}
-
 	if !utils.SliceContains(validLanguages, c.Language) {
 		return fmt.Errorf("language '%s' is not valid", c.Language)
 	}
