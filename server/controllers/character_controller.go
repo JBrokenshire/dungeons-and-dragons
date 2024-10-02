@@ -146,6 +146,12 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.InitiativeModifier == 0 {
 		updatedCharacterRequest.InitiativeModifier = existingCharacter.InitiativeModifier
 	}
+	if updatedCharacterRequest.BaseArmourClass == 0 {
+		updatedCharacterRequest.BaseArmourClass = existingCharacter.BaseArmourClass
+	}
+	if updatedCharacterRequest.ArmourClassAddDexterity == false {
+		updatedCharacterRequest.ArmourClassAddDexterity = existingCharacter.ArmourClassAddDexterity
+	}
 
 	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
@@ -153,30 +159,32 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	}
 
 	existingCharacter = &models.Character{
-		ID:                     existingCharacter.ID,
-		Name:                   updatedCharacterRequest.Name,
-		Level:                  updatedCharacterRequest.Level,
-		ProfilePictureURL:      updatedCharacterRequest.ProfilePictureURL,
-		ClassID:                updatedCharacterRequest.ClassID,
-		RaceID:                 updatedCharacterRequest.RaceID,
-		Strength:               updatedCharacterRequest.Strength,
-		Dexterity:              updatedCharacterRequest.Dexterity,
-		Constitution:           updatedCharacterRequest.Constitution,
-		Intelligence:           updatedCharacterRequest.Intelligence,
-		Wisdom:                 updatedCharacterRequest.Wisdom,
-		Charisma:               updatedCharacterRequest.Charisma,
-		ProficientStrength:     updatedCharacterRequest.ProficientStrength,
-		ProficientDexterity:    updatedCharacterRequest.ProficientDexterity,
-		ProficientConstitution: updatedCharacterRequest.ProficientConstitution,
-		ProficientIntelligence: updatedCharacterRequest.ProficientIntelligence,
-		ProficientWisdom:       updatedCharacterRequest.ProficientWisdom,
-		ProficientCharisma:     updatedCharacterRequest.ProficientCharisma,
-		WalkingSpeedModifier:   updatedCharacterRequest.WalkingSpeedModifier,
-		Inspiration:            updatedCharacterRequest.Inspiration,
-		CurrentHitPoints:       updatedCharacterRequest.CurrentHitPoints,
-		MaxHitPoints:           updatedCharacterRequest.MaxHitPoints,
-		TempHitPoints:          updatedCharacterRequest.TempHitPoints,
-		InitiativeModifier:     updatedCharacterRequest.InitiativeModifier,
+		ID:                      existingCharacter.ID,
+		Name:                    updatedCharacterRequest.Name,
+		Level:                   updatedCharacterRequest.Level,
+		ProfilePictureURL:       updatedCharacterRequest.ProfilePictureURL,
+		ClassID:                 updatedCharacterRequest.ClassID,
+		RaceID:                  updatedCharacterRequest.RaceID,
+		Strength:                updatedCharacterRequest.Strength,
+		Dexterity:               updatedCharacterRequest.Dexterity,
+		Constitution:            updatedCharacterRequest.Constitution,
+		Intelligence:            updatedCharacterRequest.Intelligence,
+		Wisdom:                  updatedCharacterRequest.Wisdom,
+		Charisma:                updatedCharacterRequest.Charisma,
+		ProficientStrength:      updatedCharacterRequest.ProficientStrength,
+		ProficientDexterity:     updatedCharacterRequest.ProficientDexterity,
+		ProficientConstitution:  updatedCharacterRequest.ProficientConstitution,
+		ProficientIntelligence:  updatedCharacterRequest.ProficientIntelligence,
+		ProficientWisdom:        updatedCharacterRequest.ProficientWisdom,
+		ProficientCharisma:      updatedCharacterRequest.ProficientCharisma,
+		WalkingSpeedModifier:    updatedCharacterRequest.WalkingSpeedModifier,
+		Inspiration:             updatedCharacterRequest.Inspiration,
+		CurrentHitPoints:        updatedCharacterRequest.CurrentHitPoints,
+		MaxHitPoints:            updatedCharacterRequest.MaxHitPoints,
+		TempHitPoints:           updatedCharacterRequest.TempHitPoints,
+		InitiativeModifier:      updatedCharacterRequest.InitiativeModifier,
+		BaseArmourClass:         updatedCharacterRequest.BaseArmourClass,
+		ArmourClassAddDexterity: updatedCharacterRequest.ArmourClassAddDexterity,
 	}
 
 	// Update the existing character in the stores with the updated information

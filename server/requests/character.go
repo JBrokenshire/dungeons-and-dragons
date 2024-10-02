@@ -25,7 +25,10 @@ type CharacterRequest struct {
 	CurrentHitPoints     int  `json:"current_hit_points"`
 	MaxHitPoints         int  `json:"max_hit_points"`
 	TempHitPoints        int  `json:"temp_hit_points"`
-	InitiativeModifier   int  `json:"initiative_modifier"`
+
+	InitiativeModifier      int  `json:"initiative_modifier"`
+	BaseArmourClass         int  `json:"base_armour_class"`
+	ArmourClassAddDexterity bool `json:"armour_class_add_dexterity"`
 }
 
 func NewCharacterRequest(cr *CharacterRequest) CharacterRequest {

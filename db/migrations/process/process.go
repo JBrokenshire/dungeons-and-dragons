@@ -23,5 +23,6 @@ func getMigrationsList() []gmStore.Migratable {
 		&list.CreateCharacterProficientTools{},
 		&list.CreateCharacterLanguages{},
 		&list.UpdateCharactersInitiativeModifier{},
+		&list.UpdateCharactersTableBaseArmourClass{},
 	}
 }
