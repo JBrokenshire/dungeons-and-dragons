@@ -43,6 +43,7 @@ func Init() *gorm.DB {
 	seeder.SetCharactersProficientWeapons()
 	seeder.SetCharactersProficientTools()
 	seeder.SetCharactersLanguages()
+	seeder.SetCharactersDefenses()
 
 	return db
 }
