@@ -31,6 +31,7 @@ type Character struct {
 	CurrentHitPoints     int  `gorm:"not null" json:"current_hit_points"`
 	MaxHitPoints         int  `gorm:"not null" json:"max_hit_points"`
 	TempHitPoints        int  `gorm:"not null" json:"temp_hit_points"`
+	InitiativeModifier   int  `gorm:"not null" json:"initiative_modifier"`
 
 	Class Class `json:"class"`
 	Race  Race  `json:"race"`

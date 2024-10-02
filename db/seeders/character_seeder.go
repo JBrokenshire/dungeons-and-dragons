@@ -41,6 +41,7 @@ func (s *Seeder) SetCharacters() {
 			MaxHitPoints:           60,
 			ProficientStrength:     true,
 			ProficientConstitution: true,
+			InitiativeModifier:     5,
 		},
 		{
 			ID:                     3,

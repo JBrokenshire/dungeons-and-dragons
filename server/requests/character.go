@@ -25,6 +25,7 @@ type CharacterRequest struct {
 	CurrentHitPoints     int  `json:"current_hit_points"`
 	MaxHitPoints         int  `json:"max_hit_points"`
 	TempHitPoints        int  `json:"temp_hit_points"`
+	InitiativeModifier   int  `json:"initiative_modifier"`
 }
 
 func NewCharacterRequest(cr *CharacterRequest) CharacterRequest {

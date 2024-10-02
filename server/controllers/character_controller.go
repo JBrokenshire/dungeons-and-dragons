@@ -143,6 +143,9 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.TempHitPoints == 0 {
 		updatedCharacterRequest.TempHitPoints = existingCharacter.TempHitPoints
 	}
+	if updatedCharacterRequest.InitiativeModifier == 0 {
+		updatedCharacterRequest.InitiativeModifier = existingCharacter.InitiativeModifier
+	}
 
 	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
@@ -173,6 +176,7 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 		CurrentHitPoints:       updatedCharacterRequest.CurrentHitPoints,
 		MaxHitPoints:           updatedCharacterRequest.MaxHitPoints,
 		TempHitPoints:          updatedCharacterRequest.TempHitPoints,
+		InitiativeModifier:     updatedCharacterRequest.InitiativeModifier,
 	}
 
 	// Update the existing character in the stores with the updated information
