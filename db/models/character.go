@@ -40,7 +40,7 @@ type Character struct {
 	Race  Race  `json:"race"`
 }
 
-func (c *Character) BeforeCreate(tx *gorm.DB) error {
+func (c *Character) BeforeCreate(_ *gorm.DB) error {
 	err := validateStats(c)
 	if err != nil {
 		return err
