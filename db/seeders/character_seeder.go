@@ -10,6 +10,7 @@ func (s *Seeder) SetCharacters() {
 		{
 			ID:                      1,
 			Name:                    "Faelan Haversham",
+			ProfilePictureURL:       "https://www.dndbeyond.com/avatars/40171/941/1581111423-117906084.jpeg?width=150&height=150&fit=crop&quality=95&auto=webp",
 			Level:                   3,
 			ClassID:                 3,
 			RaceID:                  18,
@@ -31,6 +32,7 @@ func (s *Seeder) SetCharacters() {
 			ID:                      2,
 			Name:                    "PeeWee McAnkle-Biter",
 			Level:                   5,
+			ProfilePictureURL:       "https://www.dndbeyond.com/avatars/17/969/636378926856690034.png?width=150&height=150&fit=crop&quality=95&auto=webp",
 			ClassID:                 1,
 			RaceID:                  3,
 			Strength:                16,
