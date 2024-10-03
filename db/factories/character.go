@@ -47,4 +47,7 @@ func fillCharacterDetails(c *models.Character) {
 	if c.MaxHitPoints == 0 {
 		c.MaxHitPoints = 1
 	}
+	if c.AttacksPerAction == 0 {
+		c.AttacksPerAction = 1
+	}
 }

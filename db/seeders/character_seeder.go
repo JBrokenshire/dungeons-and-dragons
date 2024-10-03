@@ -25,6 +25,7 @@ func (s *Seeder) SetCharacters() {
 			ProficientIntelligence:  true,
 			BaseArmourClass:         12,
 			ArmourClassAddDexterity: true,
+			AttacksPerAction:        1,
 		},
 		{
 			ID:                      2,
@@ -46,6 +47,7 @@ func (s *Seeder) SetCharacters() {
 			InitiativeModifier:      5,
 			BaseArmourClass:         14,
 			ArmourClassAddDexterity: true,
+			AttacksPerAction:        2,
 		},
 		{
 			ID:                      3,
@@ -66,6 +68,7 @@ func (s *Seeder) SetCharacters() {
 			ProficientIntelligence:  true,
 			BaseArmourClass:         15,
 			ArmourClassAddDexterity: true,
+			AttacksPerAction:        1,
 		},
 		{
 			ID:                      4,
@@ -87,6 +90,7 @@ func (s *Seeder) SetCharacters() {
 			ProficientConstitution:  true,
 			BaseArmourClass:         16,
 			ArmourClassAddDexterity: false,
+			AttacksPerAction:        1,
 		},
 	}
 

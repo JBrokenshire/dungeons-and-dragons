@@ -36,6 +36,8 @@ type Character struct {
 	BaseArmourClass         int  `gorm:"not null" json:"base_armour_class"`
 	ArmourClassAddDexterity bool `gorm:"not null" json:"armour_class_add_dexterity"`
 
+	AttacksPerAction int `gorm:"not null" json:"attacks_per_action"`
+
 	Class Class `json:"class"`
 	Race  Race  `json:"race"`
 }

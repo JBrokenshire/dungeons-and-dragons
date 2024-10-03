@@ -29,6 +29,8 @@ type CharacterRequest struct {
 	InitiativeModifier      int  `json:"initiative_modifier"`
 	BaseArmourClass         int  `json:"base_armour_class"`
 	ArmourClassAddDexterity bool `json:"armour_class_add_dexterity"`
+
+	AttacksPerAction int `json:"attacks_per_action"`
 }
 
 func NewCharacterRequest(cr *CharacterRequest) CharacterRequest {
@@ -67,6 +69,12 @@ func NewCharacterRequest(cr *CharacterRequest) CharacterRequest {
 	}
 	if cr.MaxHitPoints == 0 {
 		cr.MaxHitPoints = 1
+	}
+	if cr.BaseArmourClass == 0 {
+		cr.BaseArmourClass = 10
+	}
+	if cr.AttacksPerAction == 0 {
+		cr.AttacksPerAction = 1
 	}
 
 	return *cr

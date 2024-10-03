@@ -152,6 +152,9 @@ func (c *CharacterController) Update(ctx echo.Context) error {
 	if updatedCharacterRequest.ArmourClassAddDexterity == false {
 		updatedCharacterRequest.ArmourClassAddDexterity = existingCharacter.ArmourClassAddDexterity
 	}
+	if updatedCharacterRequest.AttacksPerAction == 0 {
+		updatedCharacterRequest.AttacksPerAction = existingCharacter.AttacksPerAction
+	}
 
 	_, err = c.validateCharacterRequest(updatedCharacterRequest)
 	if err != nil {
@@ -324,6 +327,9 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	if request.WalkingSpeedModifier < 0 {
 		return nil, errors.New("invalid character walkingSpeedModifier")
 	}
+	if request.AttacksPerAction < 1 {
+		return nil, errors.New("invalid character attacksPerAction")
+	}
 
 	character.Name = request.Name
 	character.Level = request.Level
@@ -341,6 +347,10 @@ func (c *CharacterController) validateCharacterRequest(request *requests.Charact
 	character.CurrentHitPoints = request.CurrentHitPoints
 	character.MaxHitPoints = request.MaxHitPoints
 	character.TempHitPoints = request.TempHitPoints
+	character.InitiativeModifier = request.InitiativeModifier
+	character.BaseArmourClass = request.BaseArmourClass
+	character.ArmourClassAddDexterity = request.ArmourClassAddDexterity
+	character.AttacksPerAction = request.AttacksPerAction
 
 	return character, nil
 }
