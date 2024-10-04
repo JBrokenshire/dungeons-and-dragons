@@ -29,5 +29,6 @@ func getMigrationsList() []gmStore.Migratable {
 		&list.UpdateCharacterAttacksPerAction{},
 		&list.CreateItemsTable{},
 		&list.CreateWeaponsTable{},
+		&list.CreateCharacterInventory{},
 	}
 }

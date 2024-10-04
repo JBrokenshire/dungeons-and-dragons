@@ -31,6 +31,21 @@ func (s *Seeder) SetItems() {
 			Cost:   25,
 			Notes:  "Simple, Ammunition, Loading, Range, Two-Handed, Slow, Range(80/320)",
 		},
+		{
+			ID:     4,
+			Name:   "Studded Leather",
+			Meta:   "Light Armour",
+			Weight: 13,
+			Cost:   45,
+			Notes:  "AC 12",
+		},
+		{
+			ID:    5,
+			Name:  "Potion of Healing",
+			Meta:  "Gear • Potion",
+			Cost:  100,
+			Notes: "Healing, Combat, Consumable",
+		},
 	}
 
 	for _, item := range items {
