@@ -19,7 +19,13 @@ type CharacterSense struct {
 	Distance    int    `gorm:"not null" json:"distance"`
 }
 
-func (c *CharacterSense) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterSense) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validSenses, c.SenseName) {
 		return fmt.Errorf("proficiency type '%s' is not valid", c.SenseName)
 	}

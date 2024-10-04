@@ -19,7 +19,13 @@ type CharacterProficientArmourType struct {
 	ArmourType  string `gorm:"not null" json:"armour_type"`
 }
 
-func (c *CharacterProficientArmourType) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterProficientArmourType) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validArmourTypes, c.ArmourType) {
 		return fmt.Errorf("armour type '%s' is not valid", c.ArmourType)
 	}

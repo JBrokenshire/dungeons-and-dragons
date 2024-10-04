@@ -17,7 +17,13 @@ type CharacterProficientWeapon struct {
 	Weapon      string `gorm:"not null" json:"weapon"`
 }
 
-func (c *CharacterProficientWeapon) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterProficientWeapon) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validWeapons, c.Weapon) {
 		return fmt.Errorf("weapon '%s' is not valid", c.Weapon)
 	}

@@ -19,7 +19,13 @@ type CharacterDefense struct {
 	DefenseType string `gorm:"not null" json:"defense_type"`
 }
 
-func (c *CharacterDefense) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterDefense) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validDefenseTypes, c.DefenseType) {
 		return fmt.Errorf("defense type '%s' is not valid", c.DefenseType)
 	}

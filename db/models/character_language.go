@@ -30,7 +30,13 @@ type CharacterLanguage struct {
 	Language    string `gorm:"not null" json:"language"`
 }
 
-func (c *CharacterLanguage) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterLanguage) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validLanguages, c.Language) {
 		return fmt.Errorf("language '%s' is not valid", c.Language)
 	}

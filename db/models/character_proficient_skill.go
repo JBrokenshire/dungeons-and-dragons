@@ -40,7 +40,13 @@ type CharacterProficientSkill struct {
 	ProficiencyType string `gorm:"not null default:'Proficiency'" json:"proficiency_type"`
 }
 
-func (c *CharacterProficientSkill) BeforeCreate(_ *gorm.DB) error {
+func (c *CharacterProficientSkill) BeforeCreate(db *gorm.DB) error {
+	var character Character
+	err := db.Where("id = ?", c.CharacterID).Find(&character).Error
+	if err != nil {
+		return fmt.Errorf("character with id '%v' not found", c.CharacterID)
+	}
+
 	if !utils.SliceContains(validProficiencyTypes, c.ProficiencyType) {
 		return fmt.Errorf("proficiency type '%s' is not valid", c.ProficiencyType)
 	}
