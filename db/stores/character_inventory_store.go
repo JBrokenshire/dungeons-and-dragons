@@ -60,12 +60,15 @@ func (g *GormCharacterInventoryStore) GetEquippedWeaponsByCharacterID(id interfa
 	}
 
 	var weapons []*models.Weapon
-	err = g.DB.
-		Preload("Item").
-		Where("item_id IN (?)", equippedItemIDs).
-		Find(&weapons).Error
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("weapons with item_ids %v could not be found", equippedItemIDs))
+	for _, itemID := range equippedItemIDs {
+		var weapon models.Weapon
+		_ = g.DB.
+			Preload("Item").
+			Where("item_id = ?", itemID).
+			First(&weapon).Error
+		if weapon.ItemID != 0 {
+			weapons = append(weapons, &weapon)
+		}
 	}
 
 	return weapons, nil

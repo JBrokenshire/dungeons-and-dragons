@@ -147,6 +147,7 @@ func (s *Seeder) SetItems() {
 			Meta:   "Melee Weapon • Uncommon",
 			Weight: 2,
 			Notes:  "Martial, Versatile",
+			Rarity: "Uncommon",
 		},
 		{
 			ID:     20,
@@ -272,6 +273,14 @@ func (s *Seeder) SetItems() {
 			Cost:   0.05,
 			Weight: 0.25,
 			Notes:  "Utility, Exploration",
+		},
+		{
+			ID:     36,
+			Name:   "Handaxe",
+			Meta:   "Melee Weapon",
+			Cost:   5,
+			Weight: 2,
+			Notes:  "Simple, Light, Thrown, Range(20/60)",
 		},
 	}
 
