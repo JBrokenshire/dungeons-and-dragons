@@ -40,6 +40,7 @@ type Weapon struct {
 	AltDamage  string `json:"alt_damage"`
 	DamageType string `json:"damage_type"`
 	Ability    string `json:"ability"`
+	Bonus      int    `json:"bonus"`
 
 	Item Item `json:"item"`
 }

@@ -33,6 +33,7 @@ func (s *Seeder) SetWeapons() {
 			Damage:     "1d4",
 			DamageType: "Piercing",
 			Ability:    "DEX",
+			Bonus:      1,
 		},
 		{
 			ItemID:     2,
@@ -67,6 +68,7 @@ func (s *Seeder) SetWeapons() {
 			Damage:     "1d6",
 			DamageType: "Slashing",
 			Ability:    "STR",
+			Bonus:      1,
 		},
 		{
 			ItemID:     34,
@@ -102,6 +104,7 @@ func (s *Seeder) SetWeapons() {
 			AltDamage:  "1d10",
 			DamageType: "Bludgeoning",
 			Ability:    "STR",
+			Bonus:      1,
 		},
 	}
 

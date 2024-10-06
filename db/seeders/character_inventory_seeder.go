@@ -47,7 +47,7 @@ func (s *Seeder) SetCharactersInventory() {
 			ID:          6,
 			CharacterID: 1,
 			ItemID:      1,
-			Equipped:    true,
+			Equipped:    false,
 			Location:    "Equipment",
 		},
 		{

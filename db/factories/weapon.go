@@ -26,5 +26,4 @@ func fillWeaponDetails(weapon *models.Weapon) {
 	if weapon.ShortRange == 0 {
 		weapon.ShortRange = 5
 	}
-
 }
