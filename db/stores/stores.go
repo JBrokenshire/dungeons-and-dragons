@@ -15,6 +15,7 @@ type Stores struct {
 	ItemStore                *GormItemStore
 	WeaponStore              *GormWeaponStore
 	CharacterInventoryStore  *GormCharacterInventoryStore
+	CharacterMoneyStore      *GormCharacterMoneyStore
 }
 
 func NewStores(db *gorm.DB) *Stores {
@@ -31,5 +32,6 @@ func NewStores(db *gorm.DB) *Stores {
 		ItemStore:                NewGormItemStore(db),
 		WeaponStore:              NewGormWeaponsStore(db),
 		CharacterInventoryStore:  NewGormCharacterInventoryStore(db),
+		CharacterMoneyStore:      NewGormCharacterMoneyStore(db),
 	}
 }

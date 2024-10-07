@@ -47,6 +47,7 @@ func Init() *gorm.DB {
 	seeder.SetItems()
 	seeder.SetWeapons()
 	seeder.SetCharactersInventory()
+	seeder.SetCharactersMoney()
 
 	return db
 }

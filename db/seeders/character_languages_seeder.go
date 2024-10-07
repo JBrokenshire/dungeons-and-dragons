@@ -36,7 +36,7 @@ func (s *Seeder) SetCharactersLanguages() {
 	for _, language := range charactersLanguages {
 		err := s.DB.Where("character_id = ? AND language = ?", language.CharacterID, language.Language).FirstOrCreate(&language).Error
 		if err != nil {
-			log.Printf("error creating character language for CharacterID: %q, Skill: %s: %s", language.CharacterID, language.Language, err.Error())
+			log.Printf("error creating character language for CharacterID: %q, Language: %s: %s", language.CharacterID, language.Language, err.Error())
 		}
 	}
 }

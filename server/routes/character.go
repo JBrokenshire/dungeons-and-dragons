@@ -17,6 +17,7 @@ func charactersRoutes(server *server.Server) {
 	defensesController := controllers.CharacterDefensesController{CharacterDefensesStore: server.Stores.CharacterDefensesStore}
 	conditionsController := controllers.CharacterConditionsController{CharacterConditionsStore: server.Stores.CharacterConditionsStore}
 	inventoryController := controllers.CharacterInventoryController{Store: server.Stores.CharacterInventoryStore}
+	moneyController := controllers.CharacterMoneyController{Store: server.Stores.CharacterMoneyStore}
 
 	characters := server.Echo.Group("/characters")
 	characters.GET("", characterController.GetAll)
@@ -43,5 +44,6 @@ func charactersRoutes(server *server.Server) {
 
 	characters.GET("/:id/inventory", inventoryController.GetCharacterInventory)
 	characters.GET("/:id/inventory/equipped-weapons", inventoryController.GetCharacterEquippedWeapons)
+	characters.GET("/:id/inventory/money", moneyController.GetCharacterMoney)
 
 }
