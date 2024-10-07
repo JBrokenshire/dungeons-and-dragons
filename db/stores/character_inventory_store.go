@@ -28,8 +28,14 @@ func (g *GormCharacterInventoryStore) GetInventoryByCharacterID(id interface{}) 
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var characterInventory []*models.CharacterInventoryItem
-	err := g.DB.
+	err = g.DB.
 		Preload("Item").
 		Where("character_id = ?", id).
 		Find(&characterInventory).Error
@@ -45,8 +51,14 @@ func (g *GormCharacterInventoryStore) GetEquippedWeaponsByCharacterID(id interfa
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var characterEquippedItems []*models.CharacterInventoryItem
-	err := g.DB.
+	err = g.DB.
 		Table("character_inventory_items").
 		Where("character_id = ? AND location = 'Equipment' AND equipped = true", id).
 		Find(&characterEquippedItems).Error

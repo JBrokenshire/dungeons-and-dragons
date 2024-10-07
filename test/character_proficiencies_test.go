@@ -58,14 +58,13 @@ func TestGetCharacterProficientArmourTypes(t *testing.T) {
 			},
 		},
 		{
-			TestName: "Empty response for invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/invalid-id/proficient/armour",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "null",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}
@@ -127,14 +126,13 @@ func TestGetCharacterProficientWeapons(t *testing.T) {
 			},
 		},
 		{
-			TestName: "Null response for invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/invalid-id/proficient/weapons",
+				URL:    "/characters/invalid-id/proficient/armour",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "null",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}
@@ -196,14 +194,13 @@ func TestGetCharacterProficientTools(t *testing.T) {
 			},
 		},
 		{
-			TestName: "Null response for invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/invalid-id/proficient/tools",
+				URL:    "/characters/invalid-id/proficient/armour",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "null",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}
@@ -266,14 +263,13 @@ func TestGetCharacterLanguages(t *testing.T) {
 			},
 		},
 		{
-			TestName: "Only common for invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/invalid-id/proficient/languages",
+				URL:    "/characters/invalid-id/proficient/armour",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "Common",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}

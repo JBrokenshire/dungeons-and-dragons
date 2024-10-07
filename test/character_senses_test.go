@@ -61,14 +61,13 @@ func TestGetCharacterSenses(t *testing.T) {
 			},
 		},
 		{
-			TestName: "Empty response on invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
 				URL:    "/characters/invalid-id/senses",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "[]",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}

@@ -30,8 +30,14 @@ func (g *GormCharacterProficienciesStore) GetProficientArmourTypesByCharacterID(
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var armourTypes []*models.CharacterProficientArmourType
-	err := g.DB.
+	err = g.DB.
 		Where("character_id = ?", id).
 		Find(&armourTypes).Error
 	if err != nil {
@@ -46,8 +52,14 @@ func (g *GormCharacterProficienciesStore) GetProficientWeaponsByCharacterID(id i
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var weapons []*models.CharacterProficientWeapon
-	err := g.DB.
+	err = g.DB.
 		Where("character_id = ?", id).
 		Find(&weapons).Error
 	if err != nil {
@@ -62,8 +74,14 @@ func (g *GormCharacterProficienciesStore) GetProficientToolsByCharacterID(id int
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var tools []*models.CharacterProficientTool
-	err := g.DB.
+	err = g.DB.
 		Where("character_id = ?", id).
 		Find(&tools).Error
 	if err != nil {
@@ -78,8 +96,14 @@ func (g *GormCharacterProficienciesStore) GetLanguagesByCharacterID(id interface
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var languages []*models.CharacterLanguage
-	err := g.DB.
+	err = g.DB.
 		Where("character_id = ?", id).
 		Find(&languages).Error
 	if err != nil {

@@ -25,8 +25,14 @@ func (g *GormCharacterMoneyStore) GetMoneyByCharacterID(id interface{}) ([]*mode
 		return nil, errors.New("id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", id).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", id, err))
+	}
+
 	var characterMoney []*models.CharacterMoney
-	err := g.DB.Table("character_money").Where("character_id = ?", id).Find(&characterMoney).Error
+	err = g.DB.Table("character_money").Where("character_id = ?", id).Find(&characterMoney).Error
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("character money with character id '%v' could not be found", id))
 	}

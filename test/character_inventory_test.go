@@ -75,6 +75,16 @@ func TestGetCharacterInventory(t *testing.T) {
 				BodyPart:   "[]",
 			},
 		},
+		{
+			TestName: "404 response for invalid character id",
+			Request: helpers.Request{
+				Method: http.MethodGet,
+				URL:    "/characters/invalid-id/inventory",
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusNotFound,
+			},
+		},
 	}
 
 	for _, test := range cases {

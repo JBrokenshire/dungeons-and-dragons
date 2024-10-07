@@ -58,14 +58,13 @@ func TestGetCharacterProficientSkills(t *testing.T) {
 			},
 		},
 		{
-			TestName: "empty response on invalid character id",
+			TestName: "404 response for invalid character id",
 			Request: helpers.Request{
 				Method: http.MethodGet,
-				URL:    "/characters/invalid-id/proficient-skills",
+				URL:    "/characters/invalid-id/proficient/skills",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "[]",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}

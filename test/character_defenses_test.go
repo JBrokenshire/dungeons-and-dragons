@@ -65,8 +65,7 @@ func TestGetCharacterDefenses(t *testing.T) {
 				URL:    "/characters/invalid-id/defenses",
 			},
 			Expected: helpers.ExpectedResponse{
-				StatusCode: http.StatusOK,
-				BodyPart:   "[]",
+				StatusCode: http.StatusNotFound,
 			},
 		},
 	}
