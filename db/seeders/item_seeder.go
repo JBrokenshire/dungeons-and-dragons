@@ -40,11 +40,12 @@ func (s *Seeder) SetItems() {
 			Notes:  "AC 12",
 		},
 		{
-			ID:    5,
-			Name:  "Potion of Healing",
-			Meta:  "Gear • Potion",
-			Cost:  100,
-			Notes: "Healing, Combat, Consumable",
+			ID:     5,
+			Name:   "Potion of Healing",
+			Meta:   "Gear • Potion",
+			Weight: 0.5,
+			Cost:   100,
+			Notes:  "Healing, Combat, Consumable",
 		},
 		{
 			ID:     7,
@@ -74,7 +75,7 @@ func (s *Seeder) SetItems() {
 			Name:   "Bedroll",
 			Meta:   "Gear • Adventuring Gear",
 			Cost:   1,
-			Weight: 1,
+			Weight: 7,
 			Notes:  "Utility",
 		},
 		{
