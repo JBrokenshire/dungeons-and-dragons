@@ -28,3 +28,18 @@ func (c *CharacterInventoryController) GetCharacterEquippedWeapons(ctx echo.Cont
 
 	return ctx.JSON(http.StatusOK, characterEquippedWeapons)
 }
+
+func (c *CharacterInventoryController) ToggleItemEquipped(ctx echo.Context) error {
+	inventoryItem, err := c.Store.GetCharacterInventoryItemByID(ctx.Param("characterID"), ctx.Param("itemID"))
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusNotFound, err)
+	}
+
+	inventoryItem.Equipped = !inventoryItem.Equipped
+	err = c.Store.UpdateCharacterInventoryItem(inventoryItem)
+	if err != nil {
+		return res.ErrorResponse(ctx, http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, inventoryItem)
+}

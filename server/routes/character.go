@@ -28,8 +28,8 @@ func charactersRoutes(server *server.Server) {
 	characters.DELETE("/:id", characterController.Delete)
 	characters.GET("/:id/inspiration", characterController.ToggleInspiration)
 	characters.GET("/:id/level-up", characterController.LevelUp)
-	characters.GET("/:id/heal/:value", characterController.Heal)
-	characters.GET("/:id/damage/:value", characterController.Damage)
+	characters.PUT("/:id/heal/:value", characterController.Heal)
+	characters.PUT("/:id/damage/:value", characterController.Damage)
 
 	characters.GET("/:id/proficient-skills", skillsController.GetProficientByCharacterID)
 	characters.GET("/:id/senses", sensesController.GetSensesByCharacterID)
@@ -45,5 +45,5 @@ func charactersRoutes(server *server.Server) {
 	characters.GET("/:id/inventory", inventoryController.GetCharacterInventory)
 	characters.GET("/:id/inventory/equipped-weapons", inventoryController.GetCharacterEquippedWeapons)
 	characters.GET("/:id/inventory/money", moneyController.GetCharacterMoney)
-
+	characters.PUT("/:characterID/inventory/:itemID", inventoryController.ToggleItemEquipped)
 }

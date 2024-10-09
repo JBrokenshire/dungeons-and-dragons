@@ -11,6 +11,8 @@ import (
 type CharacterInventoryStore interface {
 	GetInventoryByCharacterID(id interface{}) ([]*models.CharacterInventoryItem, error)
 	GetEquippedWeaponsByCharacterID(id interface{}) ([]*models.Weapon, error)
+	GetCharacterInventoryItemByID(characterID interface{}, itemID interface{}) (*models.CharacterInventoryItem, error)
+	UpdateCharacterInventoryItem(characterInventoryItem *models.CharacterInventoryItem) error
 }
 
 type GormCharacterInventoryStore struct {
@@ -84,4 +86,28 @@ func (g *GormCharacterInventoryStore) GetEquippedWeaponsByCharacterID(id interfa
 	}
 
 	return weapons, nil
+}
+
+func (g *GormCharacterInventoryStore) GetCharacterInventoryItemByID(characterID interface{}, itemID interface{}) (*models.CharacterInventoryItem, error) {
+	if reflect.TypeOf(characterID).Kind() != reflect.String && reflect.TypeOf(characterID).Kind() != reflect.Int {
+		return nil, errors.New("character id should be a string or int")
+	}
+
+	if reflect.TypeOf(itemID).Kind() != reflect.String && reflect.TypeOf(itemID).Kind() != reflect.Int {
+		return nil, errors.New("item id should be a string or int")
+	}
+
+	var characterInventoryItem models.CharacterInventoryItem
+	err := g.DB.
+		Where("id = ?", itemID).
+		First(&characterInventoryItem).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character inventory item with id %v: %v", itemID, err))
+	}
+
+	return &characterInventoryItem, nil
+}
+
+func (g *GormCharacterInventoryStore) UpdateCharacterInventoryItem(item *models.CharacterInventoryItem) error {
+	return g.DB.Save(&item).Error
 }
