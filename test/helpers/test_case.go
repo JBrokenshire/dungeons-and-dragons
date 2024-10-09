@@ -14,9 +14,9 @@ type PathParam struct {
 }
 
 type Request struct {
-	Method    string
-	URL       string
-	PathParam *PathParam
+	Method     string
+	URL        string
+	PathParams []*PathParam
 }
 
 type ExpectedResponse struct {

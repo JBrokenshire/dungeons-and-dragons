@@ -97,8 +97,15 @@ func (g *GormCharacterInventoryStore) GetCharacterInventoryItemByID(characterID 
 		return nil, errors.New("item id should be a string or int")
 	}
 
+	var character models.Character
+	err := g.DB.Table("characters").Where("id = ?", characterID).Find(&character).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error getting character with id %v: %v", characterID, err))
+	}
+
 	var characterInventoryItem models.CharacterInventoryItem
-	err := g.DB.
+	err = g.DB.
+		Preload("Item").
 		Where("id = ?", itemID).
 		First(&characterInventoryItem).Error
 	if err != nil {

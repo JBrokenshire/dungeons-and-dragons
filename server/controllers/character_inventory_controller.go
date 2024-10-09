@@ -3,6 +3,8 @@ package controllers
 import (
 	"dnd-api/db/stores"
 	res "dnd-api/server/responses"
+	"errors"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -34,6 +36,16 @@ func (c *CharacterInventoryController) ToggleItemEquipped(ctx echo.Context) erro
 	if err != nil {
 		return res.ErrorResponse(ctx, http.StatusNotFound, err)
 	}
+
+	if !inventoryItem.Item.Equippable {
+		return res.ErrorResponse(ctx, http.StatusBadRequest, errors.New("item can not be equipped"))
+	}
+
+	if inventoryItem.Location != "Equipment" {
+		return ctx.JSON(http.StatusOK, inventoryItem)
+	}
+
+	fmt.Println(">>> ", inventoryItem)
 
 	inventoryItem.Equipped = !inventoryItem.Equipped
 	err = c.Store.UpdateCharacterInventoryItem(inventoryItem)

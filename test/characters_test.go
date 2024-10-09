@@ -459,7 +459,7 @@ func TestUpdateCharacterHealth(t *testing.T) {
 		{
 			TestName: "Can heal character 1 hit point",
 			Request: helpers.Request{
-				Method: http.MethodGet,
+				Method: http.MethodPut,
 				URL:    fmt.Sprintf("/characters/%v/heal/1", healCharacter.ID),
 			},
 			Expected: helpers.ExpectedResponse{
@@ -473,7 +473,7 @@ func TestUpdateCharacterHealth(t *testing.T) {
 		{
 			TestName: "Character can't heal more than max hit points",
 			Request: helpers.Request{
-				Method: http.MethodGet,
+				Method: http.MethodPut,
 				URL:    fmt.Sprintf("/characters/%v/heal/1000", healCharacter.ID),
 			},
 			Expected: helpers.ExpectedResponse{
@@ -487,7 +487,7 @@ func TestUpdateCharacterHealth(t *testing.T) {
 		{
 			TestName: "Can damage character 1 hit point",
 			Request: helpers.Request{
-				Method: http.MethodGet,
+				Method: http.MethodPut,
 				URL:    fmt.Sprintf("/characters/%v/damage/1", damageCharacter.ID),
 			},
 			Expected: helpers.ExpectedResponse{
@@ -501,7 +501,7 @@ func TestUpdateCharacterHealth(t *testing.T) {
 		{
 			TestName: "Character can't go below 0 hit points",
 			Request: helpers.Request{
-				Method: http.MethodGet,
+				Method: http.MethodPut,
 				URL:    fmt.Sprintf("/characters/%v/damage/1000", damageCharacter.ID),
 			},
 			Expected: helpers.ExpectedResponse{

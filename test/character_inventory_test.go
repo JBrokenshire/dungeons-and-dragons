@@ -166,3 +166,136 @@ func TestGetCharacterEquippedWeapons(t *testing.T) {
 		})
 	}
 }
+
+func TestToggleCharacterInventoryItemEquipped(t *testing.T) {
+	ts.ClearTable("character_inventory_items")
+	ts.ClearTable("characters")
+	ts.ClearTable("items")
+
+	ts.SetupDefaultClasses()
+	ts.SetupDefaultRaces()
+
+	character := &models.Character{ID: 1}
+	factories.NewCharacter(ts.S.Db, character)
+
+	characterTwo := &models.Character{ID: 2}
+	factories.NewCharacter(ts.S.Db, characterTwo)
+
+	itemOne := &models.Item{ID: 1, Equippable: true}
+	factories.NewItem(ts.S.Db, itemOne)
+	weaponOne := &models.Weapon{ItemID: 1}
+	factories.NewWeapon(ts.S.Db, weaponOne)
+
+	itemTwo := &models.Item{ID: 2, Equippable: true}
+	factories.NewItem(ts.S.Db, itemTwo)
+	weaponTwo := &models.Weapon{ItemID: 2}
+	factories.NewWeapon(ts.S.Db, weaponTwo)
+
+	itemThree := &models.Item{ID: 3, Equippable: false}
+	factories.NewItem(ts.S.Db, itemThree)
+
+	itemFour := &models.Item{ID: 4, Equippable: true}
+	factories.NewItem(ts.S.Db, itemFour)
+
+	equipmentWeapon := &models.CharacterInventoryItem{
+		ID:          1,
+		CharacterID: character.ID,
+		ItemID:      itemOne.ID,
+		Equipped:    true,
+		Location:    "Equipment",
+	}
+	factories.NewCharacterInventoryItem(ts.S.Db, equipmentWeapon)
+
+	backpackWeapon := &models.CharacterInventoryItem{
+		ID:          2,
+		CharacterID: character.ID,
+		ItemID:      itemTwo.ID,
+		Equipped:    false,
+		Location:    "Backpack",
+	}
+	factories.NewCharacterInventoryItem(ts.S.Db, backpackWeapon)
+
+	equipmentItem := &models.CharacterInventoryItem{
+		ID:          3,
+		CharacterID: character.ID,
+		ItemID:      itemThree.ID,
+		Location:    "Equipment",
+	}
+	factories.NewCharacterInventoryItem(ts.S.Db, equipmentItem)
+
+	otherCharacterEquipmentWeapon := &models.CharacterInventoryItem{
+		ID:          4,
+		CharacterID: characterTwo.ID,
+		ItemID:      itemFour.ID,
+		Equipped:    true,
+		Location:    "Equipment",
+	}
+	factories.NewCharacterInventoryItem(ts.S.Db, otherCharacterEquipmentWeapon)
+
+	cases := []helpers.TestCase{
+		{
+			TestName: "Can update character inventory item",
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    fmt.Sprintf("/characters/%v/inventory/%v", character.ID, equipmentWeapon.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"id":%v`, equipmentWeapon.ID),
+					fmt.Sprintf(`"equipped":%v`, !equipmentWeapon.Equipped),
+				},
+			},
+		},
+		{
+			TestName: "Can't equip items in character backpack",
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    fmt.Sprintf("/characters/%v/inventory/%v", character.ID, backpackWeapon.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusOK,
+				BodyParts: []string{
+					fmt.Sprintf(`"id":%v`, backpackWeapon.ID),
+					fmt.Sprintf(`"equipped":%v`, backpackWeapon.Equipped),
+				},
+			},
+		},
+		{
+			TestName: "Can't equip items that are unequippable",
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    fmt.Sprintf("/characters/%v/inventory/%v", character.ID, equipmentItem.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusBadRequest,
+			},
+		},
+		{
+			TestName: "404 Response for invalid character id",
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    fmt.Sprintf("/characters/invalid-id/inventory/%v", equipmentWeapon.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusNotFound,
+			},
+		},
+		{
+			TestName: "404 Response for invalid item id",
+			Request: helpers.Request{
+				Method: http.MethodPut,
+				URL:    fmt.Sprintf("/characters/%v/inventory/invalid-id", character.ID),
+			},
+			Expected: helpers.ExpectedResponse{
+				StatusCode: http.StatusNotFound,
+			},
+		},
+	}
+
+	for _, test := range cases {
+		t.Run(test.TestName, func(t *testing.T) {
+			RunTestCase(t, test)
+		})
+	}
+}
